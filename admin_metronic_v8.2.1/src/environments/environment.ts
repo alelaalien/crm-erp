@@ -159,6 +159,9 @@ export const environment = {
       thumbnail: './assets/media/demos/demo20.png',
     },
   },
+    URL_BACKEND: 'HTTP//:127.0.0.1/',
+  URL_SERVICE: 'HTTP://127.0.0.1/api',
+  URL_FRONTEND: "HTTP://127.0.0.1/4200"
 };
 
 /*

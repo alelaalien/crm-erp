@@ -11,6 +11,8 @@ import { LayoutService } from './core/layout.service';
 import { LayoutInitService } from './core/layout-init.service';
 import { ILayout, LayoutType } from './core/configs/config';
 
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
@@ -74,11 +76,17 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private initService: LayoutInitService,
     private layout: LayoutService,
     private router: Router,
+   
+   private toastr : ToastrService ,
+    
     private activatedRoute: ActivatedRoute
   ) {
     // define layout type and load layout
     this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
+       
+       this.router.events.subscribe((event=>{}));
+        
+       if (event instanceof NavigationEnd) {
         const currentLayoutType = this.layout.currentLayoutTypeSubject.value;
 
         const nextLayoutType: LayoutType =
@@ -91,6 +99,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
         }
       }
     });
+   
+   this.toastr.success('Hello world!', 'Toastr fun!'); 
   }
 
   ngOnInit() {
