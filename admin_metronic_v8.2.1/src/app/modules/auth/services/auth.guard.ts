@@ -1,20 +1,23 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from './auth.service';
+import { InactivityService } from './inactivity.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard  {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService,private inactivity:InactivityService) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const currentUser = this.authService.currentUserValue;
-    if (currentUser) {
-      // logged in so return true
-      return true;
+   
+    if (!this.authService.user || !this.authService.token  ) {
+       this.authService.logout();
+      return false;
     }
 
+     
+    
     // not logged in so redirect to login page with the return url
-    this.authService.logout();
-    return false;
+    //this.authService.logout();
+    return true;
   }
 }

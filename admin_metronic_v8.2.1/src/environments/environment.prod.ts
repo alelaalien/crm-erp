@@ -6,7 +6,7 @@ export const environment = {
   production: true,
   appVersion: 'v8.1.8',
   USERDATA_KEY: 'authf649fc9a5f55',
-  isMockEnabled: true,
+  isMockEnabled: false,
   apiUrl: 'api',
   appThemeName: 'Metronic',
   appPurchaseUrl: 'https://1.envato.market/EA4JP',
@@ -156,9 +156,9 @@ export const environment = {
       'thumbnail': './assets/media/demos/demo20.png'
     },
   },
-  URL_BACKEND: 'HTTP//:api.domain.com/',
-  URL_SERVICE: 'HTTP://API.DOMAIN.COM/api',
-  URL_FRONTEND: 'HTTP://admin.domain.com/'
+  URL_BACKEND: 'https//:api.domain.com/',
+  URL_SERVICE: 'https://API.DOMAIN.COM/api/',
+  URL_FRONTEND: 'https://admin.domain.com/'
 };
 
 /*
