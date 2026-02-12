@@ -25,7 +25,7 @@ function appInitializer(authService: AuthService) {
     });
   };
 }
-import { ToastrModule } from 'ngx-toastr';
+import { ToastrModule } from 'ngx-toastr'; 
 @NgModule({
   declarations: [AppComponent],
   imports: [

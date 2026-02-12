@@ -20,12 +20,23 @@ use App\Http\Controllers\AuthController;
 Route::group([
  
    //'middleware' => 'auth:api',
-    'prefix' => 'auth'
+    'prefix' => 'auth', 'middleware'=> ['auth:api', 'role:Super-Admin']
  
 ], function ($router) {
     Route::post('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
+
+});
+Route::group([
+ 
+   //'middleware' => 'auth:api',
+    'prefix' => 'auth',
+  //  'middleware' => ['role:Super-Admin']
+ 
+], function ($router) {
+     
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/refresh', [AuthController::class, 'refresh'])->name('refresh');
     Route::post('/me', [AuthController::class, 'me'])->name('me');
 });
+
