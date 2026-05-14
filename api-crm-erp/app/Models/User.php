@@ -12,7 +12,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  
 class User extends Authenticatable implements JWTSubject
 {
-    use HasFactory, Notifiable;use HasRoles;
+    use HasFactory, Notifiable; 
+    use HasRoles;
  
     /**
      * The attributes that are mass assignable.
@@ -23,6 +24,15 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+
+        'last_name',
+        'avatar',
+        'phone',
+        'doc_type',
+        'doc_number',
+        'branch_id',
+        'rol_id', 
+        'address'
     ];
  
     /**
@@ -53,7 +63,8 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->getKey();
     }
- 
+ // Un usuario pertenece a una branch
+
     /**
      * Return a key value array, containing any custom claims to be added to the JWT.
      *
@@ -62,5 +73,9 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+    public function branch()
+    {
+        //return $this->belongsTo(Sucursal::class, 'branch_id');
     }
 }

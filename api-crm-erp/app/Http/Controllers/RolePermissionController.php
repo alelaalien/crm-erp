@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
@@ -32,7 +34,7 @@ public function index(Request $request)
 
                     return $rol; 
                 })      
-                ], 200);  
+                ], 201);  
     } catch (\Exception $e) {
         return response()->json([
                 "status" => "error",
@@ -80,7 +82,7 @@ public function index(Request $request)
                     "name" => $role->name
                 ]
             
-       ]);
+       ], 200);
     } catch (\Illuminate\Validation\ValidationException $e) {
          
         return response()->json([
@@ -102,7 +104,51 @@ public function index(Request $request)
  
          
     }
+    public function update(Request $request, string $id)
+    {
 
+    try {
+        $request->validate([
+            "name" => "required|unique:roles,name,". $id,
+            "permissions" => "required|array|min:1"
+        ]);
+            $role= Role::findOrFail($id);
+            $role->update($request->only("name"));
+
+            $role->syncPermissions($request->permissions);
+
+            return response()->json([
+                "status" => "success",
+                "message" => "Role edited",
+                "role"=>[
+                            "id" => $role->id,
+                            "permission" => $role->permissions,
+                            "permission_pluck"  => $role->permissions->pluck("name"),
+                            "updated_at" => $role->updated_at ? $role->updated_at->format('d-m-Y h:i A') : null,
+                            "name" => $role->name
+                        ]
+
+            ], 200);
+    }catch (\Illuminate\Validation\ValidationException $e) {
+         
+        return response()->json([
+            "status"=> "error",
+            "message" => "invalid data",
+            "errors" => $e->errors()
+        ], 422);
+    
+    } catch(\Exception $e){
+
+        return response()->json([
+            "status" => "error",
+            "debug" => $e->getMessage(),
+            "message" => "Something went wrong while role editing",
+            "line" => $e->getLine(),
+            "file" => $e->getFile()
+        ], 500);
+    }  
+ 
+    }
     /**
      * Display the specified resource.
      */
@@ -131,47 +177,46 @@ public function index(Request $request)
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        $isRole = Role::where("name", $request->name)->where("id", "<>", $id)->first();
-        
-        if($isRole)
-            {
-                return response()->json(
-                    [
-                        "code" => 403,
-                        "message" => "Item already exists"
-                    ]
-                );
-            }
 
-            $role= Role::findOrFail($id);
-            $role->update($request->all());
-            
-
-
-            foreach ($request->permissions as $key => $permission) {
-                $role-> givePermissionTo($permission);
-            }
-
-            return response()->json([
-
-                "code"=> 200,
-                "message"=>[
-                     "id" => $role->id,
-                     "permission" => $role->permissions,
-                     "permission_pluck"  => $role->permissions->pluck("name"),
-                     "updated_at" => $role->updated_format_at->format('d-m-Y h:i A'),
-                     "name" => $role->name
-                     ]
-            ]);
-    }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            
+         $role = Role::findOrFail($id);
+         if(in_array($role->name, ['Admin', 'Super-Admin'] ))
+            {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "System roles cannot be deleted."
+                ], 403);
+            }
+
+            $role->syncPermissions([]);
+            $role->delete();
+
+            return response()->json([
+                "status" => "success",
+                "id" =>$id,
+                "message" => "Role deleted successfully"
+            ], 200);
+        
+        } catch (ModelNotFoundException $e) {
+             
+            return response()-> json([
+                "status" => "error",
+                "message" => "Role not found."
+            ], 404);
+        }catch(Exception $e){
+
+            return response()->json([
+                "status" => "error",
+                "message" => "Something went wrong while deleting.",
+                "error" => $e->getMessage()
+            ], 500);
+        }
     }
 }
