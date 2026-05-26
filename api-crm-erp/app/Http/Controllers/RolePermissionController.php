@@ -95,7 +95,7 @@ public function index(Request $request)
 
         return response()->json([
             "status" => "error",
-          //  "debug" => $e->getMessage(),
+           "debug" => $e->getMessage(),
             "message" => "Something went wrong while role creating",
             "line" => $e->getLine(),
             "file" => $e->getFile()

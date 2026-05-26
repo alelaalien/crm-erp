@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Models;
- 
- 
+
+use App\Http\Controllers\RolePermissionController;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -31,6 +31,7 @@ class User extends Authenticatable implements JWTSubject
         'doc_type',
         'doc_number',
         'branch_id',
+        'gender',
         'rol_id', 
         'address'
     ];
@@ -76,6 +77,7 @@ class User extends Authenticatable implements JWTSubject
     }
     public function branch()
     {
-        //return $this->belongsTo(Sucursal::class, 'branch_id');
+       return $this->belongsTo(Branch::class, 'branch_id');
     }
+      
 }

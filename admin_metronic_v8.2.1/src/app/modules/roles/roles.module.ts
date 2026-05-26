@@ -8,7 +8,7 @@ import { EditRolesComponent } from './edit-roles/edit-roles.component';
 import { DeleteRolesComponent } from './delete-roles/delete-roles.component';
 import { ListRolesComponent } from './list-roles/list-roles.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InlineSVGModule } from 'ng-inline-svg-2';
 import { NgbModalModule, NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap'; 
 import { RouterModule } from '@angular/router';
@@ -30,8 +30,11 @@ import { RouterModule } from '@angular/router';
     InlineSVGModule,
     NgbModalModule,
     NgbPaginationModule,
-    //RouterModule,
-    NgbModule,
+    //RouterModul
+    // e,
+    FormsModule,
+    NgbModule, 
   ]
+  
 })
 export class RolesModule { }

@@ -100,7 +100,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
       }
     });
    
-   this.toastr.success('Hello world!', 'Toastr fun!'); 
+   
   }
 
   ngOnInit() {

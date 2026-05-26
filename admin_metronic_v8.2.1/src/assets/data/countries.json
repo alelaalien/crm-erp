@@ -1,0 +1,22 @@
+[
+  {
+    "pais": "España",
+    "ciudades": ["Madrid", "Barcelona", "Málaga", "Valencia", "Sevilla"]
+  },
+  {
+    "pais": "México",
+    "ciudades": ["CDMX", "Guadalajara", "Monterrey", "Cancún"]
+  },
+  {
+    "pais": "Colombia",
+    "ciudades": ["Bogotá", "Medellín", "Cali", "Barranquilla"]
+  },
+  {
+    "pais": "Argentina",
+    "ciudades": ["Buenos Aires", "Córdoba", "Rosario", "Mendoza"]
+  },
+  {
+    "pais": "Estados Unidos",
+    "ciudades": ["Miami", "New York", "Los Angeles", "San Francisco"]
+  }
+]

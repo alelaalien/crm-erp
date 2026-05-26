@@ -156,7 +156,7 @@ export const environment = {
       'thumbnail': './assets/media/demos/demo20.png'
     },
   },
-  URL_BACKEND: 'https//:api.domain.com/',
+  URL_BACKEND: 'https://api.domain.com/',
   URL_SERVICE: 'https://API.DOMAIN.COM/api/',
   URL_FRONTEND: 'https://admin.domain.com/'
 };

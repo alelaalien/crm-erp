@@ -6,7 +6,7 @@ import { AuthModel } from '../models/auth.model';
 import { AuthHTTPService } from './auth-http';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { URL_SERVICE } from 'src/app/config/config';
 import { InactivityService } from './inactivity.service';
 
@@ -52,10 +52,19 @@ export class AuthService implements OnDestroy {
 
   // public methods
   login(email: string, password: string):Observable<any>  {
+    
     this.isLoadingSubject.next(true);
-    return this.http.post(URL_SERVICE + "auth/login", {email, password}).pipe(
-      map((auth:any) => {
 
+    const headers = new HttpHeaders({
+    'Accept': 'application/json'
+    });
+
+    let URL = URL_SERVICE + "auth/login";
+    
+    return this.http.post(URL, {email, password}, {headers}).pipe(
+      
+      map((auth:any) => {
+      
         const result = this.setAuthFromLocalStorage(auth);
 
         this.user = auth.user;
@@ -63,7 +72,7 @@ export class AuthService implements OnDestroy {
         return result;
       }), 
       catchError((err) => {
-        console.error('err', err);
+       
         return of(undefined);
       }),
       finalize(() => this.isLoadingSubject.next(false))

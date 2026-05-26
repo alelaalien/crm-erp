@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BranchController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\UserAccessController;
 
@@ -51,5 +52,7 @@ Route::group([
      
     Route::resource("roles", RolePermissionController::class);
     Route::resource("users", UserAccessController::class);
+    Route::resource("branches", BranchController::class);
+
 });
 

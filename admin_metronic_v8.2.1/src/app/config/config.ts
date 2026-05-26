@@ -1,4 +1,4 @@
-import {environment} from "src/environments/environment";
+import { environment } from "src/environments/environment";
 
 export const URL_SERVICE = environment.URL_SERVICE;
 export const URL_FRONTEND = environment.URL_FRONTEND;
@@ -8,7 +8,7 @@ export const SIDEBAR: any = [
   {
     name: 'Roles',
     permissions: [
-      { name: 'Create', permission: 'create_role' },
+      { name: 'Create', permission: 'register_role' },
       { name: 'Edit', permission: 'edit_role' },
       { name: 'Delete', permission: 'delete_role' },
     ]
@@ -16,7 +16,7 @@ export const SIDEBAR: any = [
   {
     name: 'Users',
     permissions: [
-      { name: 'Create', permission: 'create_user' },
+      { name: 'Create', permission: 'register_user' },
       { name: 'Edit', permission: 'edit_user' },
       { name: 'Delete', permission: 'delete_user' },
     ]
@@ -24,38 +24,38 @@ export const SIDEBAR: any = [
   {
     name: 'Products',
     permissions: [
-      { name: 'Create', permission: 'create_product' },
+      { name: 'Create', permission: 'register_product' },
       { name: 'Edit', permission: 'edit_product' },
       { name: 'Delete', permission: 'delete_product' },
-      { name: 'View Price Wallet', permission: 'view_price_wallet_product' },
-      { name: 'Create New Price', permission: 'create_price_wallet_product' },
-      { name: 'Edit Price', permission: 'edit_price_wallet_product' },
-      { name: 'Delete Price', permission: 'delete_price_wallet_product' },
+      { name: 'View Price Wallet', permission: 'show_wallet_price_product' },
+      { name: 'Create New Price', permission: 'register_wallet_price_product' },
+      { name: 'Edit Price', permission: 'edit_wallet_price_product' },
+      { name: 'Delete Price', permission: 'delete_wallet_price_product' },
     ]
   },
   {
     name: 'Clients',
     permissions: [
-      { name: 'Create', permission: 'create_client' },
-      { name: 'Edit', permission: 'edit_client' },
-      { name: 'Delete', permission: 'delete_client' },
+      { name: 'Create', permission: 'register_clients' }, // Corregido a plural
+      { name: 'Edit', permission: 'edit_clients' },       // Corregido a plural
+      { name: 'Delete', permission: 'delete_clients' },   // Corregido a plural
     ]
   },
   {
     name: 'Cash Register',
     permissions: [
       { name: 'Validate Payments', permission: 'validate_payments' },
-      { name: 'Cash Register Report', permission: 'cash_register_report' },
-      { name: 'Processed Contracts History', permission: 'processed_contracts_history' },
-      { name: 'Expense (Cash Out)', permission: 'cash_expense' },
-      { name: 'Income', permission: 'cash_income' },
+      { name: 'Cash Register Report', permission: 'cash_reports' },               // Corregido según backend
+      { name: 'Processed Contracts History', permission: 'record_contract_process' }, // Corregido según backend
+      { name: 'Expense (Cash Out)', permission: 'cash_outflow' },               // Corregido según backend
+      { name: 'Income', permission: 'cash_inflow' },                             // Corregido según backend
       { name: 'Close Cash Register', permission: 'close_cash_register' },
     ]
   },
   {
     name: 'Proforma',
     permissions: [
-      { name: 'Create', permission: 'create_proforma' },
+      { name: 'Create', permission: 'register_proforma' },
       { name: 'Edit', permission: 'edit_proforma' },
       { name: 'Delete', permission: 'delete_proforma' },
     ]
@@ -63,19 +63,19 @@ export const SIDEBAR: any = [
   {
     name: 'Schedule',
     permissions: [
-      { name: 'Available', permission: 'schedule_access' },
+      { name: 'Available', permission: 'schedule' }, // Corregido sin el _access
     ]
   },
   {
     name: 'Commissions',
     permissions: [
-      { name: 'Available', permission: 'commissions_access' },
+      { name: 'Available', permission: 'commissions' }, // Corregido sin el _access
     ]
   },
   {
     name: 'Purchases',
     permissions: [
-      { name: 'Create', permission: 'create_purchase' },
+      { name: 'Create', permission: 'register_purchase' },
       { name: 'Edit', permission: 'edit_purchase' },
       { name: 'Delete', permission: 'delete_purchase' },
     ]
@@ -83,7 +83,7 @@ export const SIDEBAR: any = [
   {
     name: 'Transport',
     permissions: [
-      { name: 'Create', permission: 'create_transport' },
+      { name: 'Create', permission: 'register_transport' },
       { name: 'Edit', permission: 'edit_transport' },
       { name: 'Delete', permission: 'delete_transport' },
     ]
@@ -91,19 +91,19 @@ export const SIDEBAR: any = [
   {
     name: 'Dispatch',
     permissions: [
-      { name: 'Available', permission: 'dispatch_access' },
+      { name: 'Available', permission: 'dispatch' }, // Corregido sin el _access
     ]
   },
   {
     name: 'Movements',
     permissions: [
-      { name: 'Available', permission: 'movements_access' },
+      { name: 'Available', permission: 'movements' }, // Corregido sin el _access
     ]
   },
   {
     name: 'Kardex',
     permissions: [
-      { name: 'Available', permission: 'kardex_access' },
+      { name: 'Available', permission: 'inventory_kardex' }, // Corregido al nombre real del backend
     ]
   },
 ];

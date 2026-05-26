@@ -32,8 +32,8 @@
                     <label class="required fw-bold fs-6 mb-2">Rol name:</label>
                     <!--end::Label-->
                     <!--begin::Input-->
-                    <input type="text" name="name" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Full name"  />
-                    <!--end::Input[(ngModel)]="name"-->
+                    <input type="text" name="name" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Role name" [(ngModel)]="name" />
+                    <!--end::Input-->
                 </div>
 <!--begin::rol table-->
                 <div class="fv-row mb-7"> 
@@ -52,10 +52,13 @@
                                     {{PERMISSION.name}}
                                 </td>
                                 <td>
-                                    <ng-container *ngFor='let permission of PERMISSION.permissions'>
+                                    <ng-container *ngFor='let item of PERMISSION.permissions'> 
+
+                                    
                                         <div class="form-check form-check-sm form-check-custom form-check-solid py-1">
-                                    <input class="form-check-input" type="checkbox" name="permissions" value="1">
-                                    {{permission.name}}
+
+                                    <input class="form-check-input" type="checkbox" name="permissions" (click)="addPermission(item.permission)">
+                                    {{item.name}}
                                 </div>
                                     </ng-container>
                                  </td>

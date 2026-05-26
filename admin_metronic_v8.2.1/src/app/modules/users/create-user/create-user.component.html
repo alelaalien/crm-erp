@@ -1,0 +1,193 @@
+<div class="card w-100 rounded-0 border-0">
+    <!-- Encabezado del Panel -->
+    <div class="card-header pe-5">
+        <div class="card-title">
+            <span class="fs-4 fw-bolder text-gray-900 text-uppercase">New user</span>
+        </div> 
+    </div>
+
+  
+    <div class="card-body hover-scroll-overlay-y" style="height: calc(100vh - 190px);"> 
+        
+        <!-- SECCIÓN: Avatar/Foto de Perfil -->
+        <div class="fv-row mb-7 text-center">
+            <label class="d-block fw-bold fs-6 mb-3">Profile picture</label>
+            <div class="image-input image-input-outline image-input-placeholder mb-3">
+                <!-- Vista previa de la imagen -->
+                <div class="image-input-wrapper w-100px h-100px rounded-circle shadow-sm" 
+                     [style.background-image]="'url(' + image_previsualizar + ')'"
+                     style="background-size: cover; background-position: center;"></div>
+                
+                <!-- Botón para cargar archivo -->
+                <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" 
+                       data-kt-image-input-action="change" 
+                       title="edit avatar">
+                    <i class="fa fa-pencil fs-7"></i>
+                    <input type="file" (change)="processAvatar($event)" accept=".png, .jpg, .jpeg" />
+                </label>
+            </div>
+            <div class="text-muted fs-7">Allowed formats: png, jpg, jpeg.</div>
+        </div>
+
+        <!-- FILA 1: Nombre y Apellido -->
+        <div class="row g-5 mb-7">
+            <div class="col-md-6">
+                <label class="required fw-bold fs-6 mb-2">Name</label>
+                <input type="text" [(ngModel)]="name" class="form-control form-control-solid" placeholder="Ex. Juan" />
+            </div>
+            <div class="col-md-6">
+                <label class="fw-bold fs-6 mb-2">Last name</label>
+                <input type="text" [(ngModel)]="last_name" class="form-control form-control-solid" placeholder="Ex. Pérez" />
+            </div>
+        </div>
+
+        <!-- FILA 2: Identificación -->
+        <div class="row g-5 mb-7">
+            <div class="col-md-6">
+                <label class="fw-bold fs-6 mb-2">Document type</label>
+                <select [(ngModel)]="doc_type" class="form-select form-control-solid" >
+                    <option value="">Select...</option>
+                    <option value="DNI">DNI</option>
+                    <option value="RUC">RUC / NIT</option>
+                    <option value="PASSPORT">Passport</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="fw-bold fs-6 mb-2">Document number</label>
+                <input type="text" [(ngModel)]="doc_number" class="form-control form-control-solid" placeholder="Ex. 12345678" />
+            </div>
+        </div>
+
+        <!-- FILA 3: Correo y Teléfono -->
+        <div class="row g-5 mb-7">
+            <div class="col-md-6">
+                <label class="required fw-bold fs-6 mb-2">Email</label>
+                <input type="email" [(ngModel)]="email" class="form-control form-control-solid" placeholder="juan@empresa.com" />
+            </div>
+            <div class="col-md-6">
+                <label class="fw-bold fs-6 mb-2">Phone</label>
+                <input type="tel" [(ngModel)]="phone" class="form-control form-control-solid" placeholder="Ex. +34 600 000 000" />
+            </div>
+        </div>
+
+        <!-- FILA 4: Contraseña y Sucursal -->
+        <div class="row g-5 mb-7">
+            <div class="col-md-6">
+                <label class="required fw-bold fs-6 mb-2">Password</label>
+                 <input readonly type="password" [(ngModel)]="password" class="form-control form-control-solid" placeholder="••••••••" />
+            </div>
+            <div class="col-md-6">
+                <label class="required fw-bold fs-6 mb-2">Branch</label>
+
+                <ng-container *ngIf="BRANCHES.length > 0">
+                    <select [(ngModel)]="branch_id" class="form-select form-control-solid">
+                        <option value="" disabled selected>Select branch...</option>
+                        <option  *ngFor="let branch of BRANCHES" [value]="branch.id"> {{branch.name}} <span>{{branch.name}} </span>  </option>
+                     
+                    </select>
+                </ng-container>
+                <ng-template #loading>
+ 
+                </ng-template>
+                
+            </div>
+        </div>
+
+        <!-- FILA 5: Dirección -->
+        <div class="fv-row mb-7">
+            <label class="fw-bold fs-6 mb-2">Address</label>
+            <input type="text" [(ngModel)]="address" class="form-control form-control-solid" placeholder="Street 123, City" />
+        </div>
+
+        <!-- FILA 6: Género (Corregidos los nombres de los inputs de tipo radio) -->
+        <div class="fv-row mb-10">
+            <label class="fw-bold fs-6 mb-3">Gender</label>
+            <div class="mt-2">
+                <select class="form-select form-select-solid" [(ngModel)]="gender">
+                    <option value="" disabled selected>Select gender</option>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                    <option value="N">Non binary</option>
+                </select>
+            </div>
+        </div>
+
+
+
+
+
+<div class="fv-row mb-7">
+    <label class="fs-6 fw-semibold form-label mb-2">
+        <span class="required">Role assignment</span>
+        <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Select one or more roles for the user"></i>
+    </label>
+
+    <div class="d-flex flex-column gap-3 max-h-300px overflow-y-auto pe-2">
+        
+        <div *ngFor="let role of ROLES" 
+             class="border rounded p-3 d-flex flex-column transition-all"
+             [ngClass]="{'border-primary bg-light-primary': isRoleSelected(role.id), 'border-gray-300': !isRoleSelected(role.id)}">
+            
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="form-check form-check-custom form-check-solid">
+                    <input class="form-check-input h-20px w-20px" 
+                           type="checkbox" 
+                       
+                           [name] = "role.name"
+                           [checked]="isRoleSelected(role.id)"
+                           (change)="toggleRole(role.id)" />
+                           
+                    <label class="form-check-label ms-3 fw-bold text-gray-800 fs-6" [for]="'role_' + role.id">
+                        {{ role.name }}
+                    </label>
+                </div>
+
+                <button type="button" 
+                        class="btn btn-sm btn-icon btn-light btn-active-light-primary w-25px h-25px"
+                        (click)="role.showPermissions = !role.showPermissions">
+                    <i class="bi fs-7" [ngClass]="role.showPermissions ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+                </button>
+            </div>
+
+            <div *ngIf="role.showPermissions" class="mt-3 pt-3 border-top border-gray-200">
+                <span class="text-muted fs-7 fw-semibold d-block mb-2">Assigned permissions:</span>
+                <div class="d-flex flex-wrap gap-1">
+                    <span *ngFor="let perm of role.permissions" 
+                          class="badge badge-light-secondary text-gray-600 fs-8 py-1 px-2 rounded">
+                        {{ perm.name }}
+                    </span>
+                    <span *ngIf="!role.permissions?.length" class="text-muted fs-7 italic">
+                        No permissions assigned to this role.
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+     <div class="card-footer bg-white text-center py-5 border-top">
+        <button type="button" class="btn btn-light me-3" (click)="dismissPanel()">
+            Cancel
+        </button>
+        <button type="button" class="btn btn-primary fw-bold" (click)="createUser()">
+            Save user
+        </button>
+    </div>
+</div>

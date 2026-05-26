@@ -19,14 +19,33 @@
 //@import 'ngx-toastr/toastr-bs5-alert';
 
 .toast-success {
-    background-color: #d4ffd4 !important;
+    background-color: #00ff00 !important;
 }
 .toast-error {
-    background-color: #FFEEF3 !important;
+    background-color: #ff0000 !important;
 }
 .toast-info {
-    background-color: #b6e4ff !important;
+    background-color: #3db8ff !important;
 }
 .toast-warning {
-    background-color: #ffe1b6 !important;
+    background-color: #ffa220 !important;
+}
+/* Usamos el ID del contenedor para ganar prioridad */
+#toast-container > .toast-error {
+    background-color: #f1416c !important; /* El rojo de Metronic */
+    color: #ffffff !important;           /* Texto blanco */
+    opacity: 1 !important;               /* Evita el efecto rosado por transparencia */
+    box-shadow: 0 0.5rem 1.5rem 0.5rem rgba(0, 0, 0, 0.075) !important;
+}
+
+/* Para asegurar que el icono y el texto también cambien */
+#toast-container > .toast-error .toast-message,
+#toast-container > .toast-error .toast-title {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+.toast-top-center, .toast-center-center {
+    width: 100%;
+    pointer-events: none;  
 }

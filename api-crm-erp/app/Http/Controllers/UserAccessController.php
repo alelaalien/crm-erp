@@ -7,6 +7,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class UserAccessController extends Controller
 {
@@ -19,12 +20,12 @@ class UserAccessController extends Controller
             //code...
   
         $search = $request->get("search");
-        $users = User::with(['roles', 'branch'])
+        $users = User::with(['roles', 'branch', 'permissions'])
         ->where(function($query) use ($search) {
             $query->where("name", "like", "%".$search."%")
                     ->orWhere("last_name", "like", "%".$search."%")
                     ->orWhere("email", "like", "%".$search."%")
-                    ->doc_number("last_name", "like", "%".$search."%")
+                    ->orWhere("doc_number", "like", "%".$search."%")
                     ->orWhere("phone", "like", "%".$search."%");
 
 
@@ -35,42 +36,40 @@ class UserAccessController extends Controller
 
 
 
-                return response()->json([
-                    "status"=>"success",
-                    "total" => $users->total(),
-                    "users" => $users->map(function($user){
-                        return[
-                            'name' =>$user->name,
-                            'email' =>$user->email,
-                            'id' =>$user->id, 
-                            'last_name' =>$user->last_name,
-                            'avatar' =>$user->avatar? env("APP_URL")."/storage" .$user->avatar:null,
-                            'phone' =>$user->phone,
-                            'doc_type' =>$user->doc_type,
-                            'doc_number' =>$user->doc_number,
-                            'branch_id' =>$user->branch_id,
-                            'address' =>$user->address  ,
-                            'roles' =>$user->roles->map(function($role){
-
-                                   return [
-                                        "id" => $role->id,
-                                        "name" => $role->name,
-                                   ];
-
-                                }),
-                            'branches' =>$user->branches->map(function($branch){
-                                
-                            return [
-                                "id" => $branch->id,
-                                "name" => $branch->name,
-                                "address" => $branch->address,
-
-                            ];
-                            }),
-                        ];
-                    }),
-                
-                ], 200);
+            return response()->json([
+                "status" => "success",
+                "total"  => $users->total(),
+                "users"  => $users->map(function($user) {
+                    return [
+                        'id'          => $user->id, 
+                        'name'        => $user->name,
+                        'last_name'   => $user->last_name,
+                        'email'       => $user->email,
+                        'avatar'      => $user->avatar = $user->avatar ,
+                                //:  asset("/storage/users/user.png"),
+                        'phone'       => $user->phone,
+                        'doc_type'    => $user->doc_type,
+                        'doc_number'  => $user->doc_number, 
+                        'updated_at'  => $user->updated_at ? $user->updated_at->format('d-m-Y h:i A'): null,  
+                        'address'     => $user->address,
+                     'roles'  => $user->roles?->map(function($role) {
+                                        return [
+                                            "id"          => $role->id,
+                                            "name"        => $role->name,
+                                            "permissions" => $role->permissions?->map(function($permission) {
+                                              return  ["name" => $permission->name];
+                                            })->toArray() ?? [] 
+                                           
+                                        ];
+                                    }),
+                            'branch'      => $user->branch ? [
+                            "id"      => $user->branch->id,
+                            "name"    => $user->branch->name,
+                            "address" => $user->branch->address,
+                        ] : null,
+                    ];
+                }),  
+            ], 200); 
 
         } catch (Exception $e) {
             
@@ -93,11 +92,10 @@ class UserAccessController extends Controller
                     "email"       => 'required|email|unique:users,email',
                     "password"    => 'required|min:8', 
                     "branch_id"   => 'nullable|exists:branches,id',
-                    'avatar'      => 'nullable|string|max:35',
+                    'avatar'      => 'nullable',
                     'phone'       => 'nullable|string|max:35',
-                    'doc_type'    => 'required|string|max:35', 
-
-//                    'rol_id'      => 'nullable|exists:roles,id',
+                    'doc_type'    => 'required|string|max:35',  
+                    'gender'      => 'nullable|in:M,F,N',
                     'address'     => 'nullable|string|max:250',
 
 
@@ -107,30 +105,33 @@ class UserAccessController extends Controller
        try {
             
             $user = DB::transaction(function() use($request){
-            $userData = $request->except('password');
+                
+            $userData = $request->except(['password', 'avatar']);
 
             $userData['password'] = bcrypt($request->password);
 
+                if ($request->hasFile("image")) {
+                    
+                $file = $request->file("image");
+    
+                $path = $file->store("users", "public"); 
+    
+                $userData['avatar'] = basename($path); 
+   
+}
                 $newUser = User::create($userData);
 
                 if($request->roles){
                     
-                    $newUser->syncRoles($request->roles);
-                }
-        
-
-                if($request->hasFile("image")){
-                    $path = Storage::putFile(
-                        "users", $request->file("image")
-                    );
-
-                    $request->request->add(["avatar" => $path]);
-                }
-
+                    $roles = json_decode($request->roles, true);
+                    $newUser->syncRoles($roles);
+                } 
+ 
+                $newUser->refresh();
+                $newUser->load(['branch', 'roles.permissions']);
+         
                 return $newUser;
-            });
-
-            
+            }); 
 
             return response()->json([
                 "status" => "success",
@@ -162,24 +163,30 @@ class UserAccessController extends Controller
      */
     public function update(Request $request, string $id)
     {
+
          $request->validate([
                     "name"        => 'required|string|max:250',
                     "last_name"   => 'required|string|max:250',
-                    "doc_number"  => 'required|string|unique:users,doc_number',
-                    "email"       => 'required|email|unique:users,email',
-                    "password"    => 'required|min:8', 
+                    "email"       => 'required|email|unique:users,email, ' .$id,
+                    "password"    => 'nullable|min:8', 
                     "branch_id"   => 'nullable|exists:branches,id',
-                    'avatar'      => 'nullable|string|max:35',
+                    'avatar'      => 'nullable',
                     'phone'       => 'nullable|string|max:35',
-                    'doc_type'    => 'required|string|max:35', 
-
-//                    'rol_id'      => 'nullable|exists:roles,id',
-                    'address'     => 'nullable|string|max:250',
-
-
+                    'doc_type'    => 'required|string|max:35',  
+                    'gender'      => 'nullable|in:M,F,N',
+                    'address'     => 'nullable|string|max:250', 
+                    "doc_type"    => 'required|string',
+                    "doc_number"  => [
+                        'required',
+                        'string',
+                        Rule::unique("users", "doc_number")
+                                    ->ignore($id)
+                                    ->where(function($query) use ($request){
+                                        return $query->where('doc_type', $request->doc_type);
+                                    })
+                    ] 
             ]);
-            
-            
+             
        try {
             
             $user = DB::transaction(function() use($request, $id){
@@ -191,23 +198,27 @@ class UserAccessController extends Controller
             $currentUser = User::findOrFail($id); 
 
             if($request->roles){
-                
-                $currentUser->syncRoles($request->roles);
+
+            $ids = json_decode($request->roles, true);
+                $rolesIds = array_map('intval',$ids  );
+                $currentUser->syncRoles($rolesIds);
             }
          
             if($request->hasFile("image")){
                 
                 if($currentUser->avatar) Storage::delete($currentUser->avatar);
-                
-                $path = Storage::putFile(
-                    "users", $request->file("image")
-                );
-
-                $userData["avatar"] = $path ;
+                 
+                $file = $request->file("image");
+    
+                $path = $file->store("users", "public"); 
+    
+                $userData['avatar'] = basename($path); 
                 }
 
-
+                
                 $currentUser->update($userData);
+                $currentUser->refresh();
+                $currentUser->load(["branch", "roles.permissions"]);
 
                 return $currentUser;
             });

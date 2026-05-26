@@ -19,11 +19,11 @@ export class InactivityService {
   ];
 
   constructor(private ngZone: NgZone) {
-    this.startListening();
+  //  this.startListening();
   }
 
     startListening() {
-    this.ngZone.runOutsideAngular(() => {
+/*     this.ngZone.runOutsideAngular(() => {
 
       const eventStreams = this.events.map(event =>
         fromEvent(window, event)
@@ -33,29 +33,29 @@ export class InactivityService {
 
       this.subscription = merge(...eventStreams, visibility$)
         .subscribe(() => this.onUserActivity());
-    });
+    }); */
   }
 
   private onUserActivity() {
-    this.ngZone.run(() => {
+/*     this.ngZone.run(() => {
       this.isUserActive = true;
-      console.log("activo")
+      
       this.resetTimer();
-    });
+    }); */
   }
-
+ 
   private resetTimer() {
-    clearTimeout(this.timeout);
+   /*  clearTimeout(this.timeout);
 
     this.timeout = setTimeout(() => {
       this.isUserActive = false;
       localStorage.setItem("lastActivity", Date.now().toString());
-    }, 5000);
+    }, 5000); */
   }
 
   ngOnDestroy() {
-    this.subscription?.unsubscribe();
-    clearTimeout(this.timeout);
+    //this.subscription?.unsubscribe();
+    //clearTimeout(this.timeout);
   }
 
 }

@@ -1,0 +1,54 @@
+<td [attr.colspan]="colSpan" class="p-0">
+    <!-- El borde cambia de color dinámicamente según la sección activa -->
+    <div class="bg-light-inline p-5 rounded m-2 border-start border-4 animate__animated animate__fadeIn"
+         [ngClass]="section === 'roles' ? 'border-success' : 'border-primary'">
+        
+        <div [ngSwitch]="section">
+            
+            <!-- SECCIÓN: DETALLES DE SUCURSAL (BRANCH) -->
+            <div *ngSwitchCase="'branch'">
+                <h5 class="text-primary mb-3">
+                    <i class="fa fa-building me-2"></i>Detalles de la Sucursal
+                </h5>
+                <div class="row" *ngIf="data; else noBranch">
+                    <div class="col-md-6">
+                        <p class="mb-1 text-gray-700"><strong>Nombre:</strong> {{ data.name }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="mb-1 text-gray-700"><strong>Dirección:</strong> {{ data.address }}</p>
+                    </div>
+                </div>
+                <ng-template #noBranch>
+                    <p class="text-muted mb-0">Este usuario no tiene una sucursal asignada.</p>
+                </ng-template>
+            </div>
+
+            <!-- SECCIÓN: DETALLES DE ROLES Y PERMISOS -->
+            <div *ngSwitchCase="'roles'">
+                <h5 class="text-success mb-3">
+                    <i class="fa fa-shield-alt me-2"></i>Permisos del Rol
+                </h5>
+                <div *ngIf="data && data.length > 0; else noRoles">
+                    <div *ngFor="let rol of data" class="mb-3">
+                        <h6 class="fw-bold text-gray-800 mb-2">
+                            Rol: <span class="text-success">{{rol.name}}</span>
+                        </h6>
+                        
+                        <div class="d-flex flex-wrap gap-2" *ngIf="rol.permissions && rol.permissions.length > 0; else noPerms">
+                            <span *ngFor="let perm of rol.permissions" class="badge badge-secondary fs-8">
+                                {{ perm.name }}
+                            </span>
+                        </div>
+                        <ng-template #noPerms>
+                            <p class="text-muted fs-7 mb-0">Este rol no tiene permisos individuales asignados.</p>
+                        </ng-template>
+                    </div>
+                </div>
+                <ng-template #noRoles>
+                    <p class="text-muted mb-0">Este usuario no tiene roles del sistema.</p>
+                </ng-template>
+            </div>
+
+        </div> <!-- Fin Switch -->
+    </div>
+</td>
