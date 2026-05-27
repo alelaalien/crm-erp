@@ -1,27 +1,7 @@
-<div id="kt_app_sidebar_menu_scroll" class="scroll-y my-5 mx-3 position-relative" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_app_sidebar_logo, #kt_app_sidebar_footer" data-kt-scroll-wrappers="#kt_app_sidebar_menu" data-kt-scroll-offset="5px" data-kt-scroll-save-state="true" data-kt-sidebar-minimize="on" data-kt-sidebar-minimize-toggle="#kt_app_sidebar_toggle" data-kt-sidebar-minimize-default="false">
-
-  <!-- Elegant Minimalist Toggle Button -->
-  <button 
-    id="kt_app_sidebar_toggle" 
-    class="btn btn-icon btn-sm btn-clean bg-transparent position-absolute top-0 start-100 translate-middle z-index-1" 
-    style="margin-top: 15px; border: none; background: none; box-shadow: none;"
-    data-kt-toggle="true" 
-    data-kt-toggle-state="active" 
-    data-kt-toggle-target="body" 
-    data-kt-toggle-name="app-sidebar-minimize">
+<div id="kt_app_sidebar_menu_scroll" class="scroll-y my-5 mx-3" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_app_sidebar_logo, #kt_app_sidebar_footer" data-kt-scroll-wrappers="#kt_app_sidebar_menu" data-kt-scroll-offset="5px" data-kt-scroll-save-state="true">
+  <div class="menu menu-column menu-rounded menu-sub-indention fw-semibold fs-6" id="#kt_app_sidebar_menu" data-kt-menu="true" data-kt-menu-expand="false">
     
-    <app-keenicon 
-      name="arrow-left" 
-      class="fs-3 text-gray-400 text-hover-primary transition-3s"
-      style="transition: transform 0.3s ease;">
-    </app-keenicon>
-  </button>
-
-<div class="menu menu-column menu-rounded menu-sub-indention fw-semibold fs-6" 
-       id="#kt_app_sidebar_menu" 
-       data-kt-menu="true" 
-       data-kt-menu-expand="false"
-       data-kt-menu-trigger="click">    
+    <!-- Dashboard -->
     <div class="menu-item">
       <a class="menu-link without-sub" routerLink="/dashboard" routerLinkActive="active">
         <span class="menu-icon">
@@ -31,88 +11,35 @@
       </a>
     </div>
     
+    <!-- Sección: Settings -->
     <div class="menu-item">
       <div class="menu-content pt-6 pb-1 px-3">
         <span class="menu-section text-muted text-uppercase fs-9 fw-bold tracking-wider opacity-75">Settings</span>
       </div>
     </div>
 
+    <!-- Acordeón: Main -->
     <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
       <span class="menu-link">
         <span class="menu-icon">
           <app-keenicon name="setting-3" class="fs-2"></app-keenicon>
         </span>
-        <span class="menu-title" data-link="/apps">Main</span>
+        <span class="menu-title">Main</span>
         <span class="menu-arrow"></span>
       </span>
       <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
-        <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/users">
-            <span class="menu-bullet">
-              <span class="bullet bullet-dot"></span>
-            </span>
-            <span class="menu-title">Branches</span>
-          </a>
-        </div>
-        <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/roles">
-            <span class="menu-bullet">
-              <span class="bullet bullet-dot"></span>
-            </span>
-            <span class="menu-title">Warehouses</span>
-          </a>
-        </div>
-        <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/roles">
-            <span class="menu-bullet">
-              <span class="bullet bullet-dot"></span>
-            </span>
-            <span class="menu-title">Delivery Location</span>
-          </a>
-        </div>
-        <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/roles">
-            <span class="menu-bullet">
-              <span class="bullet bullet-dot"></span>
-            </span>
-            <span class="menu-title">Payment Method</span>
-          </a>
-        </div>
-        <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/roles">
-            <span class="menu-bullet">
-              <span class="bullet bullet-dot"></span>
-            </span>
-            <span class="menu-title">Customer Segment</span>
-          </a>
-        </div>
-        <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/roles">
-            <span class="menu-bullet">
-              <span class="bullet bullet-dot"></span>
-            </span>
-            <span class="menu-title">Categories</span>
-          </a>
-        </div>
-        <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/roles">
-            <span class="menu-bullet">
-              <span class="bullet bullet-dot"></span>
-            </span>
-            <span class="menu-title">Suppliers</span>
-          </a>
-        </div>
-        <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/roles">
-            <span class="menu-bullet">
-              <span class="bullet bullet-dot"></span>
-            </span>
-            <span class="menu-title">Units</span>
-          </a>
-        </div>
+        <div class="menu-item"><a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/users"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Branches</span></a></div>
+        <div class="menu-item"><a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/roles"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Warehouses</span></a></div>
+        <div class="menu-item"><a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/roles"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Delivery Location</span></a></div>
+        <div class="menu-item"><a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/roles"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Payment Method</span></a></div>
+        <div class="menu-item"><a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/roles"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Customer Segment</span></a></div>
+        <div class="menu-item"><a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/roles"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Categories</span></a></div>
+        <div class="menu-item"><a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/roles"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Suppliers</span></a></div>
+        <div class="menu-item"><a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/roles"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Units</span></a></div>
       </div>
     </div>
 
+    <!-- Sección: Roles & Access -->
     <div class="menu-item">
       <div class="menu-content pt-6 pb-1 px-3">
         <span class="menu-section text-muted text-uppercase fs-9 fw-bold tracking-wider opacity-75">Roles & Access</span>
@@ -128,57 +55,39 @@
       </a>
     </div>
 
+    <!-- Acordeón: User Management -->
     <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
       <span class="menu-link">
         <span class="menu-icon">
           <app-keenicon name="profile-user" class="fs-2"></app-keenicon>
         </span>
-        <span class="menu-title" data-link="/users">User Management</span>
+        <span class="menu-title">User Management</span>
         <span class="menu-arrow"></span>
       </span>
       <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
-        <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/users/list">
-            <span class="menu-bullet">
-              <span class="bullet bullet-dot"></span>
-            </span>
-            <span class="menu-title">List</span>
-          </a>
-        </div>
+        <div class="menu-item"><a class="menu-link without-sub" routerLinkActive="active" routerLink="/users/list"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">List</span></a></div>
       </div>
     </div>
     
+    <!-- Sección: Commercial -->
     <div class="menu-item">
       <div class="menu-content pt-6 pb-1 px-3">
         <span class="menu-section text-muted text-uppercase fs-9 fw-bold tracking-wider opacity-75">Commercial</span>
       </div>
     </div>
 
+    <!-- Acordeón: Products -->
     <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
       <span class="menu-link">
         <span class="menu-icon">
           <app-keenicon name="parcel" class="fs-2"></app-keenicon>
         </span>
-        <span class="menu-title" data-link="/apps">Products</span>
+        <span class="menu-title">Products</span>
         <span class="menu-arrow"></span>
       </span>
       <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
-        <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/users">
-            <span class="menu-bullet">
-              <span class="bullet bullet-dot"></span>
-            </span>
-            <span class="menu-title">Registration</span>
-          </a>
-        </div>
-        <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/roles">
-            <span class="menu-bullet">
-              <span class="bullet bullet-dot"></span>
-            </span>
-            <span class="menu-title">List</span>
-          </a>
-        </div>
+        <div class="menu-item"><a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/users"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Registration</span></a></div>
+        <div class="menu-item"><a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/roles"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">List</span></a></div>
       </div>
     </div>
 
@@ -200,31 +109,18 @@
       </a>
     </div>
     
+    <!-- Acordeón: Proforma -->
     <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
       <span class="menu-link">
         <span class="menu-icon">
           <app-keenicon name="tablet-text-down" class="fs-2"></app-keenicon>
         </span>
-        <span class="menu-title" data-link="/apps">Proforma</span>
+        <span class="menu-title">Proforma</span>
         <span class="menu-arrow"></span>
       </span>
       <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
-        <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/users">
-            <span class="menu-bullet">
-              <span class="bullet bullet-dot"></span>
-            </span>
-            <span class="menu-title">Create</span>
-          </a>
-        </div>
-        <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/roles">
-            <span class="menu-bullet">
-              <span class="bullet bullet-dot"></span>
-            </span>
-            <span class="menu-title">List</span>
-          </a>
-        </div>
+        <div class="menu-item"><a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/users"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Create</span></a></div>
+        <div class="menu-item"><a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/roles"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">List</span></a></div>
       </div>
     </div>
 
@@ -246,65 +142,40 @@
       </a>
     </div>
 
+    <!-- Sección: Inventory -->
     <div class="menu-item">
       <div class="menu-content pt-6 pb-1 px-3">
         <span class="menu-section text-muted text-uppercase fs-9 fw-bold tracking-wider opacity-75">Inventory</span>
       </div>
     </div>
 
+    <!-- Acordeón: Purchases -->
     <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
       <span class="menu-link">
         <span class="menu-icon">
           <app-keenicon name="delivery-3" class="fs-2"></app-keenicon>
         </span>
-        <span class="menu-title" data-link="/apps">Purchases</span>
+        <span class="menu-title">Purchases</span>
         <span class="menu-arrow"></span>
       </span>
       <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
-        <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/users">
-            <span class="menu-bullet">
-              <span class="bullet bullet-dot"></span>
-            </span>
-            <span class="menu-title">Registration</span>
-          </a>
-        </div>
-        <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/roles">
-            <span class="menu-bullet">
-              <span class="bullet bullet-dot"></span>
-            </span>
-            <span class="menu-title">List</span>
-          </a>
-        </div>
+        <div class="menu-item"><a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/users"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Registration</span></a></div>
+        <div class="menu-item"><a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/roles"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">List</span></a></div>
       </div>
     </div>
 
+    <!-- Acordeón: Shipping -->
     <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
       <span class="menu-link">
         <span class="menu-icon">
           <app-keenicon name="truck" class="fs-2"></app-keenicon>
         </span>
-        <span class="menu-title" data-link="/apps">Shipping</span>
+        <span class="menu-title">Shipping</span>
         <span class="menu-arrow"></span>
       </span>
       <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
-        <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/users">
-            <span class="menu-bullet">
-              <span class="bullet bullet-dot"></span>
-            </span>
-            <span class="menu-title">Registration</span>
-          </a>
-        </div>
-        <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/roles">
-            <span class="menu-bullet">
-              <span class="bullet bullet-dot"></span>
-            </span>
-            <span class="menu-title">List</span>
-          </a>
-        </div>
+        <div class="menu-item"><a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/users"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Registration</span></a></div>
+        <div class="menu-item"><a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/roles"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">List</span></a></div>
       </div>
     </div>
 

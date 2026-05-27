@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ILayout, LayoutType } from '../../core/configs/config';
+import { ILayout } from '../../core/configs/config';
 import { LayoutService } from '../../core/layout.service';
 
 @Component({
@@ -11,7 +11,6 @@ import { LayoutService } from '../../core/layout.service';
 export class SidebarComponent implements OnInit, OnDestroy {
   private unsubscribe: Subscription[] = [];
 
-  // public props
   appSidebarDisplay: boolean;
   appSidebarDefaultFixedDesktop: boolean;
   appSidebarDefaultMinimizeDesktopEnabled: boolean;
@@ -24,14 +23,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
   appSidebarDefaultCollapseDesktopDefault: boolean;
   appSidebarDefaultCollapseMobileEnabled: boolean;
   appSidebarDefaultCollapseMobileDefault: boolean;
-
   appSidebarDefaultPushHeader: boolean;
   appSidebarDefaultPushToolbar: boolean;
   appSidebarDefaultPushFooter: boolean;
-
   appSidebarDefaultStacked: boolean;
-
-  // logo
   appSidebarDefaultMinimizeDefault: boolean;
   toggleButtonClass: string;
   toggleEnabled: boolean;
@@ -72,7 +67,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
       if (this.appSidebarDefaultMinimizeDesktopDefault) {
         document.body.setAttribute('data-kt-app-sidebar-minimize', 'on');
       }
-
       this.appSidebarDefaultMinimizeDesktopHoverable = this.layout.getProp(
         'app.sidebar.default.minimize.desktop.hoverable',
         config
@@ -94,16 +88,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
       if (this.appSidebarDefaultMinimizeMobileDefault) {
         document.body.setAttribute('data-kt-app-sidebar-minimize-mobile', 'on');
       }
-
       this.appSidebarDefaultMinimizeMobileHoverable = this.layout.getProp(
         'app.sidebar.default.minimize.mobile.hoverable',
         config
       ) as boolean;
       if (this.appSidebarDefaultMinimizeMobileHoverable) {
-        document.body.setAttribute(
-          'data-kt-app-sidebar-hoverable-mobile',
-          'true'
-        );
+        document.body.setAttribute('data-kt-app-sidebar-hoverable-mobile', 'true');
       }
     }
 
@@ -169,14 +159,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
       document.body.setAttribute('app-sidebar-stacked', 'true');
     }
 
-    // Logo
     this.appSidebarDefaultMinimizeDefault = this.layout.getProp(
       'app.sidebar.default.minimize.desktop.default',
       config
     ) as boolean;
-    this.toggleButtonClass = this.appSidebarDefaultMinimizeDefault
-      ? 'active'
-      : '';
+    this.toggleButtonClass = this.appSidebarDefaultMinimizeDefault ? 'active' : '';
     this.toggleEnabled =
       this.appSidebarDefaultMinimizeDesktopEnabled ||
       this.appSidebarDefaultCollapseDesktopEnabled;

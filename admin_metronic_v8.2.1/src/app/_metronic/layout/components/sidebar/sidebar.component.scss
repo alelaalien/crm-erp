@@ -1,12 +1,61 @@
-// Desactiva los submenús flotantes por hover cuando la barra está minimizada
-[data-kt-app-sidebar-minimize="on"] {
-  .menu-sub-accordion {
-    display: none !important;
-  }
-  
-  .menu-item:hover > .menu-sub {
-    display: none !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
+// Sobrescribimos las variables internas de Metronic para el menú
+:host ::ng-deep {
+  .menu {
+    // Títulos principales en un gris más suave y ligero
+    .menu-title {
+      font-size: 0.915rem !important;
+      font-weight: 500 !important;
+      color: #9196b6 !important; // Gris medio/claro muy elegante (estilo Metronic premium)
+    }
+
+    // Títulos de sección (Settings, Inventory...) aún más sutiles
+    .menu-section {
+      font-size: 0.725rem !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.07rem !important;
+      color: #b5b5c3 !important; // Gris claro para que no compita visualmente
+    }
+
+    // Enlaces e interacciones (Hover y Activo)
+    .menu-item {
+      .menu-link {
+        padding: 0.65rem 0.75rem !important;
+        border-radius: 0.475rem !important;
+        transition: background-color 0.15s ease, color 0.15s ease !important;
+
+        // Color del icono en reposo
+        .menu-icon, .menu-icon app-keenicon {
+          color: #a1a5b7 !important;
+        }
+
+        // Hover sutil (se ilumina al pasar el mouse)
+        &:hover:not(.active) {
+          background-color: #f9f9f9 !important;
+          
+          .menu-title { color: var(--bs-primary) !important; }
+          .menu-icon, .menu-icon app-keenicon { color: var(--bs-primary) !important; }
+        }
+
+        // Estado de ruta activa en Angular
+        &.active {
+          background-color: #f1f3f9 !important;
+          
+          .menu-title { 
+            color: var(--bs-primary) !important; 
+            font-weight: 600 !important;
+          }
+          .menu-icon, .menu-icon app-keenicon { 
+            color: var(--bs-primary) !important; 
+          }
+        }
+      }
+    }
+
+    // Balas de los submenús consistentes con el tono claro
+    .bullet-dot {
+      background-color: #d8dbe2 !important;
+      width: 5px !important;
+      height: 5px !important;
+    }
   }
 }
