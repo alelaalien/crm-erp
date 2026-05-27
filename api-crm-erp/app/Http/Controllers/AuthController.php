@@ -53,16 +53,39 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
-    {
+public function login()
+{
+    try {
         $credentials = request(['email', 'password']);
  
-        if (! $token = auth('api')->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+         if (! $token = auth('api')->attempt($credentials)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Credenciales incorrectas o usuario no autorizado.'
+            ], 401);
         }
  
         return $this->respondWithToken($token);
+
+    } catch (\Throwable $e) {
+    
+        
+        $response = [
+            'status' => 'error',
+            'message' => 'Ocurrió un error interno en el servidor (500).'
+        ];
+
+         if (config('app.env') === 'local') {
+            $response['debug'] = [
+                'error_message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ];
+        }
+
+        return response()->json($response, 500);
     }
+}
  
     /**
      * Get the authenticated User.
@@ -105,6 +128,11 @@ class AuthController extends Controller
      */
     protected function respondWithToken($token)
     {
+        $permissions  =  auth('api')->user()->getAllPermissions()->map(function($p){
+            return $p->name;
+        });
+        $roles = auth('api')->user()->getRoleNames();
+
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
@@ -112,8 +140,10 @@ class AuthController extends Controller
             'user' => [
                 "full_name" => auth('api')->user()->name ,// +' '+ auth('api')->user()->surname,
                 "email" => auth('api')->user()->email,
-                //"avatar" => auth('api')->user()->pic
-            ]
+               "avatar" => asset('storage/users/' . (auth('api')->user()->avatar ?: 'user.png')),
+                "roles" => $roles,
+                "permissions" => $permissions  ]
+
         ]);
     }
 }

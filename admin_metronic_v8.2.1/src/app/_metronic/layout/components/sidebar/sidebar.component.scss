@@ -1,0 +1,12 @@
+// Desactiva los submenús flotantes por hover cuando la barra está minimizada
+[data-kt-app-sidebar-minimize="on"] {
+  .menu-sub-accordion {
+    display: none !important;
+  }
+  
+  .menu-item:hover > .menu-sub {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}

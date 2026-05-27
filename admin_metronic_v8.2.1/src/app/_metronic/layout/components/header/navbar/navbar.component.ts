@@ -1,4 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core'; 
+import { URL_BACKEND } from 'src/app/config/config';
+import { AuthService } from 'src/app/modules/auth';
 
 @Component({
   selector: 'app-navbar',
@@ -14,7 +16,13 @@ export class NavbarComponent implements OnInit {
   userAvatarClass: string = 'symbol-35px symbol-md-40px';
   btnIconClass: string = 'fs-2 fs-md-1';
 
-  constructor() {}
+  user : any;
+  avatar : string = URL_BACKEND + "/storage/users/";
+  constructor(
+    private authService : AuthService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.user = this.authService.user;
+  }
 }
