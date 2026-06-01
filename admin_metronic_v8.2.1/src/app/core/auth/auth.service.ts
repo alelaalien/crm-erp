@@ -1,14 +1,14 @@
 import { EnvironmentInjector, Injectable, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, of, Subscription } from 'rxjs';
 import { map, catchError, switchMap, finalize } from 'rxjs/operators';
-import { UserModel } from '../models/user.model';
-import { AuthModel } from '../models/auth.model';
-import { AuthHTTPService } from './auth-http';
+import { UserModel } from 'src/app/models/user.model'; 
+import { AuthModel } from '../../modules/auth/models/auth.model';
+import { AuthHTTPService } from '../../modules/auth/services/auth-http';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { URL_SERVICE } from 'src/app/config/config';
-import { InactivityService } from './inactivity.service';
+import { InactivityService } from '../../modules/auth/services/inactivity.service';
 
 export type UserType = UserModel | undefined;
 
@@ -19,21 +19,22 @@ export class AuthService implements OnDestroy {
   // private fields
   private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
   private authLocalStorageToken = `${environment.appVersion}-${environment.USERDATA_KEY}`;
-  token: any;
-  user: any;
+  
+  private userSubject = new BehaviorSubject<UserType>(undefined);
+  private isLoadingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  // public fields
-  currentUser$: Observable<UserType>;
-  isLoading$: Observable<boolean>;
-  currentUserSubject: BehaviorSubject<UserType>;
-  isLoadingSubject: BehaviorSubject<boolean>;
-
+  public currentUser$ =  this.userSubject.asObservable();
+  public isLoading$ = this.isLoadingSubject.asObservable();
+  public token: any;
+  public user: any;
+ 
+  
   get currentUserValue(): UserType {
-    return this.currentUserSubject.value;
+    return this.userSubject.value;
   }
 
   set currentUserValue(user: UserType) {
-    this.currentUserSubject.next(user);
+    this.userSubject.next(user);
   }
 
   constructor(
@@ -42,10 +43,8 @@ export class AuthService implements OnDestroy {
     private http: HttpClient,
     private inactivity: InactivityService
   ) {
-    this.isLoadingSubject = new BehaviorSubject<boolean>(false);
-    this.currentUserSubject = new BehaviorSubject<UserType>(undefined);
-    this.currentUser$ = this.currentUserSubject.asObservable();
-    this.isLoading$ = this.isLoadingSubject.asObservable();
+    
+    
     const subscr = this.getUserByToken().subscribe();
     this.unsubscribe.push(subscr);
   }
@@ -61,22 +60,25 @@ export class AuthService implements OnDestroy {
 
     let URL = URL_SERVICE + "auth/login";
     
-    return this.http.post(URL, {email, password}, {headers}).pipe(
+    return this.http.post(URL, {email, password}).pipe(
       
       map((auth:any) => {
       
-        const result = this.setAuthFromLocalStorage(auth);
+        localStorage.setItem("token", auth.access_token);
+        localStorage.setItem("user", JSON.stringify(auth.user));
 
-        this.user = auth.user;
+        this.userSubject.next(auth.user)
        
-        return result;
+        
+        return auth;
       }), 
       catchError((err) => {
        
-        return of(undefined);
+        return of(err);
       }),
-      finalize(() => this.isLoadingSubject.next(false))
+      finalize(() => {this.hasPermission("");this.isLoadingSubject.next(false);  } )
     );
+   
   }
 
   logout() {
@@ -100,7 +102,7 @@ export class AuthService implements OnDestroy {
     return of(auth).pipe(
       map((user: any) => {
         if (user) {
-          this.currentUserSubject.next(user);
+          this.userSubject.next(user);
         } else {
           this.logout();
         }
@@ -109,32 +111,14 @@ export class AuthService implements OnDestroy {
       finalize(() => this.isLoadingSubject.next(false))
     );
   }
- 
-  // need create new user then login
-    registration(user: UserModel): Observable<any> {
-    this.isLoadingSubject.next(true);
-    return this.http.post( URL_SERVICE, user).pipe(
-      map(() => {
-        this.isLoadingSubject.next(false);
-      }),
-      switchMap(() => this.login(user.email, user.password)),
-      catchError((err) => {
-        console.error('err', err);
-        return of(undefined);
-      }),
-      finalize(() => this.isLoadingSubject.next(false))
-    );
-  }
-
+  
   forgotPassword(email: string): Observable<boolean> {
     this.isLoadingSubject.next(true);
     return  this. forgotPassword(email)
       .pipe(finalize(() => this.isLoadingSubject.next(false)));
   }
- 
-  // private methods
-  private setAuthFromLocalStorage(auth: any): boolean {
-    // store auth authToken/refreshToken/epiresIn in local storage to keep user logged in between page refreshes
+  
+  private setAuthFromLocalStorage(auth: any): boolean { 
 
     if (auth && auth.access_token) {
        
@@ -163,8 +147,40 @@ export class AuthService implements OnDestroy {
       return undefined;
     }
   }
+ 
+ /*  
+  
+  //console.group('🔍 Depuración de Auth');//
+  console.log('Usuario actual en el Subject:', user);
+  
+}*/
 
   ngOnDestroy() {
     this.unsubscribe.forEach((sb) => sb.unsubscribe());
   }  
+  //el permiso
+  hasPermission(permission: string): boolean {
+    if( this.isSuperAdmin()) return true;
+    const user = this.currentUserValue;
+    return user?.permissions?.includes(permission) || false;
+  }
+
+ //AL MENOS UNO 
+  hasAnyPermission(permissions: string[]): boolean {
+    if( this.isSuperAdmin()) return true;
+
+    return permissions.some(p => this.hasPermission(p));
+  }
+
+  //  TODOS los permisos  
+  hasAllPermissions(permissions: string[]): boolean {
+    if( this.isSuperAdmin()) return true;
+
+    return permissions.every(p => this.hasPermission(p));
+  }
+  public isSuperAdmin(): boolean {
+    const user = this.currentUserValue;
+    if (user?.roles?.includes('Super Admin')) return true;
+    return false;  
+  }
 }

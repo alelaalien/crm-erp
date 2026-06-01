@@ -1,0 +1,46 @@
+:host ::ng-deep {
+  // Asegurar que el botón de menú móvil tenga hovers sutiles y el gris correcto
+  #kt_app_sidebar_mobile_toggle {
+    transition: background-color 0.15s ease, color 0.15s ease !important;
+    
+    app-keenicon, i {
+      color: #a1a5b7 !important; // Gris claro aclarado
+    }
+
+    &:hover {
+      background-color: #f9f9f9 !important;
+      
+      app-keenicon, i {
+        color: var(--bs-primary) !important;
+      }
+    }
+  }
+
+  // Estilos refinados para el menú superior de la cabecera (Links aclarados)
+  .app-header-menu {
+    .menu-link {
+      padding: 0.5rem 0.75rem !important;
+      border-radius: 0.475rem !important;
+      transition: background-color 0.15s ease, color 0.15s ease !important;
+
+      .menu-title {
+        color: #7e8299 !important; // Gris aclarado idéntico al de tu sidebar
+        font-size: 0.915rem !important;
+        font-weight: 500 !important;
+      }
+
+      &:hover:not(.active) {
+        background-color: #f9f9f9 !important;
+        .menu-title { color: var(--bs-primary) !important; }
+      }
+
+      &.active {
+        background-color: #f1f3f9 !important;
+        .menu-title { 
+          color: var(--bs-primary) !important; 
+          font-weight: 600 !important;
+        }
+      }
+    }
+  }
+}

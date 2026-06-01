@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { UserService } from '../service/user.service';
+import { UserService } from '../../../core/services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import {   NgbActiveOffcanvas } from '@ng-bootstrap/ng-bootstrap';
-import { BranchService } from '../../configuration/branches/service/branch.service';
+import { BranchService } from '../../../core/services/branch.service';
 import { map, Observable } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { URL_BACKEND } from 'src/app/config/config';

@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { UserModel } from '../../models/user.model';
-import { AuthService } from '../../services/auth.service';
+import { UserModel } from 'src/app/models/user.model';  
+import { AuthService } from '../../../../core/auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({

@@ -1,7 +1,8 @@
 <ng-container *ngIf="title$ | async as title">
   <!-- begin::Title -->
-  <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 my-0"
-    [ngClass]="{'flex-column justify-content-center': appPageTitleDirection, 'align-items-center': !appPageTitleDirection}">
+  <h1 class="w-100 text-center text-gray-800 fw-semibold fs-2 my-0 tracking-wide"
+    [ngClass]="{'flex-column justify-content-center': appPageTitleDirection, 'align-items-center': !appPageTitleDirection}"
+    style="letter-spacing: 0.03em !important; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;">
     {{ title }}
     <ng-container *ngIf="appPageTitleDescription">
       <ng-container *ngIf="description$ | async as description">

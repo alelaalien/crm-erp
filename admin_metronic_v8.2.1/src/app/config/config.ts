@@ -6,6 +6,15 @@ export const URL_BACKEND = environment.URL_BACKEND;
 
 export const SIDEBAR: any = [
   {
+  name: 'Sensitive Information',
+  permissions: [
+ 
+    { name: 'View User Private Info', permission: 'view_user_private_info' },
+    { name: 'View User Legal Documents', permission: 'view_user_legal_docs' }, 
+  ]
+  },
+  {
+    
     name: 'Roles',
     permissions: [
       { name: 'Create', permission: 'register_role' },

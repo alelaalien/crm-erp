@@ -57,7 +57,8 @@
                                     
                                         <div class="form-check form-check-sm form-check-custom form-check-solid py-1">
 
-                                    <input class="form-check-input" type="checkbox" [checked]="permissions.includes(item.permission)" name="permissions" (click)="addPermission(item.permission)">
+                                    <input *appCan="'edit_role'" 
+                                    class="form-check-input" type="checkbox" [checked]="permissions.includes(item.permission)" name="permissions" (click)="addPermission(item.permission)">
                                     {{item.name}}
                                 </div>
                                     </ng-container>

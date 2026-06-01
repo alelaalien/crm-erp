@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateRolesComponent } from '../create-roles/create-roles.component';
-import { RolesServiceService } from '../service/roles-service.service'; 
+import { RolesServiceService } from 'src/app/core/services/roles-service.service';  
 import { EditRolesComponent } from '../edit-roles/edit-roles.component';
 import { DeleteRolesComponent } from '../delete-roles/delete-roles.component';
 

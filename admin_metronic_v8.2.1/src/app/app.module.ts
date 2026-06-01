@@ -2,16 +2,22 @@ import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
+
+// --- Modulos de Terceros ---
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { ClipboardModule } from 'ngx-clipboard';
 import { TranslateModule } from '@ngx-translate/core';
 import { InlineSVGModule } from 'ng-inline-svg-2';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { ToastrModule } from 'ngx-toastr';
+
+// --- Modulos Proyecto ---
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthService } from './modules/auth/services/auth.service';
+import { AuthService } from './core/auth/auth.service';
+import { SharedModule } from './shared/shared.module';
 import { environment } from 'src/environments/environment';
-import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 // #fake-start#
 import { FakeAPIService } from './_fake/fake-api.service';
@@ -24,11 +30,11 @@ function appInitializer(authService: AuthService) {
       authService.getUserByToken().subscribe().add(resolve);
     });
   };
-}
-import { ToastrModule } from 'ngx-toastr'; 
+} 
 @NgModule({
-  declarations: [AppComponent ],
+  declarations: [AppComponent],
   imports: [
+    SharedModule,
     BrowserModule,
     BrowserAnimationsModule,
     TranslateModule.forRoot(),
@@ -56,7 +62,7 @@ ToastrModule.forRoot(),
       multi: true,
       deps: [AuthService],
     },
-  ],
+  ], 
   bootstrap: [AppComponent],
 })
 export class AppModule { }

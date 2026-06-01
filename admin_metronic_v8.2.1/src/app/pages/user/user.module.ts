@@ -34,6 +34,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     NgbCollapseModule,
     NgbTooltipModule,
     SweetAlert2Module.forChild(),
+    SharedModule
   ]
 })
 export class UserModule { }

@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { SIDEBAR } from 'src/app/config/config';
-import { RolesServiceService } from '../service/roles-service.service';
+import { RolesServiceService } from 'src/app/core/services/roles-service.service';  
 
 @Component({
   selector: 'app-delete-roles',

@@ -1,14 +1,13 @@
 import { Component, Injector } from '@angular/core';
-import { UserService } from '../service/user.service';
+import { UserService } from '../../../core/services/user.service';
 import {  NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap'
 import { CreateUserComponent } from '../create-user/create-user.component';
 import { DeleteUserComponent } from '../delete-user/delete-user.component';
 import { EditUserComponent } from '../edit-user/edit-user.component';
-import { BranchService } from '../../configuration/branches/service/branch.service';
-import { environment } from 'src/environments/environment';
+import { BranchService } from '../../../core/services/branch.service'; 
 import { URL_BACKEND } from 'src/app/config/config';
-import { RolesServiceService } from '../../roles/service/roles-service.service';
+import { RolesServiceService } from 'src/app/core/services/roles-service.service';  
 @Component({
   selector: 'app-list-users',
   templateUrl: './list-users.component.html',

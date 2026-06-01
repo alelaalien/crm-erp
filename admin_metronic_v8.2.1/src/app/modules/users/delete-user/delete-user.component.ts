@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { UserService } from '../service/user.service';
+import { UserService } from '../../../core/services/user.service';
 
 @Component({
   selector: 'app-delete-user',

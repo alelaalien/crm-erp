@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { RolesServiceService } from '../service/roles-service.service';
+import { RolesServiceService } from 'src/app/core/services/roles-service.service';
 import { ToastrService } from 'ngx-toastr';
 import { SIDEBAR } from 'src/app/config/config';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
