@@ -58,7 +58,7 @@ class RoleService {
     
     }
 
-    public function getAll(string $search) 
+    public function getAll(?string $search) 
     {
         
         $roles = Role::where("name", "like", "%".$search."%")
