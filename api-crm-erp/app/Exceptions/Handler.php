@@ -2,7 +2,10 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -23,8 +26,39 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function(ModelNotFoundException $e, $request)
+        {
+            if($request->is('api/*'))
+                {
+                    return response()->json(
+                        [
+                            'status' => 'error',
+                            'message' => 'Resource not found.',
+                             
+                        ],
+                        404
+                    );
+                }
+        });
+
+        $this->renderable(function(ValidationException $e, $request)
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation error.',
+                'errors' => $e->errors()
+            ], 403);
+        });
+
+        $this->renderable(function(AccessDeniedHttpException $e, $request)
+        {
+            return response()->json(
+                [
+                    'status' => 'error',
+                    'message' => 'You have not permissions to continue.',
+
+                ],
+                403);
         });
     }
 }

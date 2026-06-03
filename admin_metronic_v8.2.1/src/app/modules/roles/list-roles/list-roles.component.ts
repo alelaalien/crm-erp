@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateRolesComponent } from '../create-roles/create-roles.component';
 import { RolesServiceService } from 'src/app/core/services/roles-service.service';  
@@ -21,8 +21,10 @@ export class ListRolesComponent {
   pageSize: number = 0;
  
   constructor(
-    public modalService: NgbModal,
-    public rolesService: RolesServiceService
+    private modalService: NgbModal,
+    private rolesService: RolesServiceService,
+    private changeDetectorRef: ChangeDetectorRef
+
   ){
 
   }
@@ -52,9 +54,10 @@ export class ListRolesComponent {
 
     modalRef.componentInstance.RoleC.subscribe((role:any) =>{
       console.log(role);
-      if(role) this.ROLES.unshift(role);
+      if(role) this.ROLES = [role, ...this.ROLES];
+      this.changeDetectorRef.markForCheck();
     
-       })
+       });
   }
   deleteRole(role:any){
  

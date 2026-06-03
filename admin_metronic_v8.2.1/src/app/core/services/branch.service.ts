@@ -31,4 +31,6 @@ export class BranchService {
            return this.http.get(URL,{headers: headers})
                            .pipe(finalize(()=>{this.isLoadingSubject.next(false)}));
          }
+
+  
 }

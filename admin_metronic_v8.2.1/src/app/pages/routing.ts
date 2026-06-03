@@ -60,7 +60,10 @@ const Routing: Routes = [
     loadChildren: () => import('../modules/users/users.module').then((m) => m.UsersModule),
   },
 
-
+  {
+    path: 'configurations',
+    loadChildren: ()=>import('../modules/configuration/configuration.module').then((m)=>m.ConfigurationModule),
+  },
 
 
 

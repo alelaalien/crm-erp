@@ -86,7 +86,7 @@
                         
                         <ng-container *ngFor="let rol of ROLES" >
                             <tr>
-                                <td>
+                                <td><pre>{{ rol | json }}</pre>
                                     {{rol.name}}                                    
                                 </td>
                               <td><ul> 
