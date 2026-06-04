@@ -134,10 +134,10 @@
                            type="checkbox" 
                        
                            [name] = "role.name"
-                           [checked]="isRoleSelected(role.id)"
-                           (change)="toggleRole(role.id)" />
+                           [checked]="isRoleSelected(role.name)"
+                           (change)="toggleRole(role.name)" />
                            
-                    <label class="form-check-label ms-3 fw-bold text-gray-800 fs-6" [for]="'role_' + role.id">
+                    <label class="form-check-label ms-3 fw-bold text-gray-800 fs-6" [for]="'role_' + role.name">
                         {{ role.name }}
                     </label>
                 </div>
@@ -154,7 +154,7 @@
                 <div class="d-flex flex-wrap gap-1">
                     <span *ngFor="let perm of role.permissions" 
                           class="badge badge-light-secondary text-gray-600 fs-8 py-1 px-2 rounded">
-                        {{ perm.name }}
+                        {{ perm }}
                     </span>
                     <span *ngIf="!role.permissions?.length" class="text-muted fs-7 italic">
                         No permissions assigned to this role.

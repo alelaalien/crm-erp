@@ -1,11 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UserService } from '../../../core/services/user.service';
 import { ToastrService } from 'ngx-toastr';
-import {   NgbActiveOffcanvas } from '@ng-bootstrap/ng-bootstrap';
-import { BranchService } from '../../../core/services/branch.service';
+import { NgbActiveOffcanvas } from '@ng-bootstrap/ng-bootstrap'; 
 import { map, Observable } from 'rxjs';
-import { DatePipe } from '@angular/common';
-import { URL_BACKEND } from 'src/app/config/config';
+import { DatePipe } from '@angular/common'; 
 
 @Component({
   selector: 'app-create-user',
@@ -22,7 +20,7 @@ export class CreateUserComponent implements OnInit{
  
         isLoading$: any; 
  
-        image_previsualizar: string = 'user.png';  
+        image_previsualizar: string = '';  
         file_avatar: any = null; 
         name: string = '';
         last_name: string = '';
@@ -41,14 +39,9 @@ export class CreateUserComponent implements OnInit{
     constructor(
       private userService: UserService,
       private toastr: ToastrService,
-      private offCanvas:  NgbActiveOffcanvas, 
-      private datePipe: DatePipe,
+      private offCanvas:  NgbActiveOffcanvas 
       
-    ){
-     
-    }
-
-
+    ){  } 
 
     createUser(){
 
@@ -95,15 +88,14 @@ export class CreateUserComponent implements OnInit{
             form.append("branch_id", this.branch_id);
             form.append("address", this.address);
             form.append("gender", this.gender);
+            if(this.file_avatar)
             form.append("image", this.file_avatar); 
             form.append("roles", JSON.stringify(this.selectedRoles));
 
  
       this.userService.registerUser(form).subscribe({ 
         next:(resp:any) =>  { 
-   
-              resp.user.updated_at = this.datePipe.transform(resp.user.created_at, 'dd-MM-yyyy hh:mm a');
-                    
+    
               this.UserC.emit(resp.user);
               this.offCanvas.dismiss();
             
@@ -149,6 +141,6 @@ export class CreateUserComponent implements OnInit{
     }
     ngOnInit(): void{
  
-       
+       console.log(this.BRANCHES);
     }
 }

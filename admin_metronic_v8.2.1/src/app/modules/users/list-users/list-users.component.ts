@@ -1,12 +1,11 @@
-import { Component, Injector } from '@angular/core';
+import { ChangeDetectorRef, Component, Injector } from '@angular/core';
 import { UserService } from '../../../core/services/user.service';
 import {  NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap'
 import { CreateUserComponent } from '../create-user/create-user.component';
 import { DeleteUserComponent } from '../delete-user/delete-user.component';
 import { EditUserComponent } from '../edit-user/edit-user.component';
-import { BranchService } from '../../../core/services/branch.service'; 
-import { URL_BACKEND } from 'src/app/config/config';
+import { BranchService } from '../../../core/services/branch.service';  
 import { RolesServiceService } from 'src/app/core/services/roles-service.service';  
 @Component({
   selector: 'app-list-users',
@@ -27,9 +26,7 @@ export class ListUsersComponent {
   expandedRow: { userId: any; section: string } | null = null;
   colspan: number = 7;
   BRANCHES: any;
-  ROLES: any;
-  URL_STORAGE : string = URL_BACKEND + "storage/users/";
- 
+  ROLES: any; 
   
  
   constructor(
@@ -38,7 +35,8 @@ export class ListUsersComponent {
     private offcanvasService: NgbOffcanvas,
     private injector: Injector,
     private branchService : BranchService,
-    private rolesService : RolesServiceService
+    private rolesService : RolesServiceService,
+    private changeDetectorRef : ChangeDetectorRef
 
   ){
 
@@ -55,17 +53,16 @@ export class ListUsersComponent {
     
   }
   listUsers(page = 1){
-    this.userService.listUsers(page, this.search)
 
-    
-    .subscribe((resp:any)=>{
-        console.log(resp)
-        this.USERS = resp.users ;
-        this.pageSize = 25; 
-        this.totalPages = Math.ceil(resp.total / this.pageSize); 
-        this.currentPage = page;
-        
-    }
+    this.userService.listUsers(page, this.search) 
+                              .subscribe((resp:any)=>{
+                                  console.log(resp)
+                                  this.USERS = resp.users ;
+                                  this.pageSize = 25; 
+                                  this.totalPages = Math.ceil(resp.total / this.pageSize); 
+                                  this.currentPage = page;
+                                  
+                              }
     
     );
   }
@@ -89,6 +86,7 @@ export class ListUsersComponent {
 
   openUserCanvas(user: any = null){
 
+    
     const toOpen = user ? EditUserComponent : CreateUserComponent ; 
     
               const offCanvas = this.offcanvasService.open (toOpen, {
@@ -101,11 +99,11 @@ export class ListUsersComponent {
                     offCanvas.componentInstance.BRANCHES = this.BRANCHES;
 
                   } else {
-                    
+                   
                     this.branchService.listBranches().subscribe((resp: any) => {
 
                       this.BRANCHES = resp; 
-                      
+                       console.log(this.BRANCHES.length + " totales");
                       offCanvas.componentInstance.BRANCHES = this.BRANCHES;
                     });
                   }
@@ -131,7 +129,9 @@ export class ListUsersComponent {
      
               offCanvas.componentInstance.UserC.subscribe((user:any) =>{
       
-              if(user)  this.USERS.unshift(user);
+              if(user)  this.USERS = [user, ...this.USERS];
+                
+                this.changeDetectorRef.markForCheck();
                   
               });
   
@@ -140,7 +140,6 @@ export class ListUsersComponent {
   editUsere(user:any){
 
               const offCanvas = this.openUserCanvas(user);
-
 
               offCanvas.componentInstance.USER_SELECTED = user;
 
@@ -161,11 +160,15 @@ export class ListUsersComponent {
               });
 
               modalRef.componentInstance.USER_SELECTED =user;
-              modalRef.componentInstance.UsereD.subscribe((user:any) =>{
-            
-                    if (user?.id)  {
+              modalRef.componentInstance.UserD.subscribe((resp:any) =>{
+           
+                    if (resp?.user_id)  { 
 
-                        this.USERS = this.USERS.filter((r: any) => r.id != user.id); }
+                        this.USERS = this.USERS.filter((r: any) => r.id != resp.user_id); 
+
+                        this.changeDetectorRef.markForCheck();
+                      
+                      }
                         
               });
 

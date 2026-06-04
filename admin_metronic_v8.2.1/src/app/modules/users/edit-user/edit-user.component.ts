@@ -4,13 +4,12 @@ import { ToastrService } from 'ngx-toastr';
 import { NgbActiveOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { URL_BACKEND } from 'src/app/config/config';
 import { FormsModule } from '@angular/forms';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule  } from '@angular/common';
 
 @Component({
   selector: 'app-edit-user',
   templateUrl: './edit-user.component.html', 
-  styleUrls: ['./edit-user.component.scss'],
-  providers: [DatePipe]
+  styleUrls: ['./edit-user.component.scss'] 
 })
 export class EditUserComponent {
 
@@ -41,13 +40,8 @@ export class EditUserComponent {
   constructor(
     private userService : UserService,
     private toastr : ToastrService,
-    private offCanvas:  NgbActiveOffcanvas, 
-    private datePipe: DatePipe,
-
- 
-  ){
-
-  }
+    private offCanvas:  NgbActiveOffcanvas,   
+  ){  }
  
 processAvatar(event: any) {
     if (event.target.files && event.target.files[0]) {
@@ -81,8 +75,8 @@ processAvatar(event: any) {
    
     
     Object.assign(this, this.USER_SELECTED);
-    const avatar = this.USER_SELECTED.avatar ?? 'user.png';
-    this.image_previsualizar = URL_BACKEND + "storage/users/" +  avatar;
+     
+    this.image_previsualizar = this.USER_SELECTED.avatar;
     if (this.USER_SELECTED.roles) {
      
         this.selectedRoles = this.USER_SELECTED.roles.map((rol: any) => rol.id);
@@ -138,14 +132,15 @@ editUser(){
             formData.append("branch_id", this.branch_id);
             formData.append("address", this.address);
             formData.append("gender", this.gender);
+            
+            if(this.file_avatar)
+
             formData.append("image", this.file_avatar); 
             formData.append("roles", JSON.stringify(this.selectedRoles));
 
    
       this.userService.updateUser(formData).subscribe({ 
-        next:(resp:any) =>  { 
-
-              resp.user.updated_at = this.datePipe.transform(resp.user.updated_at, 'dd-MM-yyyy hh:mm a');
+        next:(resp:any) =>  {  
               this.UserE.emit(resp.user);
               this.offCanvas.dismiss();
             

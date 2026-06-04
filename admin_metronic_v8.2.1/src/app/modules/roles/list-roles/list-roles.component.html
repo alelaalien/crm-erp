@@ -87,11 +87,11 @@
                         <ng-container *ngFor="let rol of ROLES" >
                             <tr>
                                 <td>
-                               <!--      <pre>{{ rol | json }}</pre> -->
+                                    <!-- <pre>{{ rol | json }}</pre> -->
                                     {{rol.name}}                                    
                                 </td>
                               <td><ul> 
-                                    <ng-container *ngFor="let item of rol.permission_pluck">
+                                    <ng-container *ngFor="let item of rol.permissions">
                                     
                                         <li>
                                             {{item}}
@@ -99,7 +99,7 @@
                                     </ul>
                                 </td>  
                                 
-                                <td > {{rol.updated_format_at }} </td>
+                                <td > {{rol.updated_at }} </td>
                                 <td class="" *appCan="['edit_role', 'delete_role']; mode: 'any'">
                                     <a href="#" onclick="return false;" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1" *appCan="'edit_role'">
                                         <i class="ki-duotone ki-pencil fs-2" (click)="editRole(rol)">

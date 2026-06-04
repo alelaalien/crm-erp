@@ -47,7 +47,7 @@ class Handler extends ExceptionHandler
                 'status' => 'error',
                 'message' => 'Validation error.',
                 'errors' => $e->errors()
-            ], 403);
+            ], 422);
         });
 
         $this->renderable(function(AccessDeniedHttpException $e, $request)

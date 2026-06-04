@@ -53,7 +53,7 @@ export class ListRolesComponent {
     });
 
     modalRef.componentInstance.RoleC.subscribe((role:any) =>{
-      console.log(role);
+    
       if(role) this.ROLES = [role, ...this.ROLES];
       this.changeDetectorRef.markForCheck();
     

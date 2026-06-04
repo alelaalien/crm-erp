@@ -10,6 +10,7 @@ class RoleService {
     public function createRole(array $data)
     {
         return DB::transaction(
+            
             function() use($data)
             {
                 $role = Role::create(
@@ -62,7 +63,7 @@ class RoleService {
     {
         
         $roles = Role::where("name", "like", "%".$search."%")
-                    ->orderBy("name", "desc")
+                    ->orderBy("name", "asc")
                     ->paginate(25);
         return $roles;
     }

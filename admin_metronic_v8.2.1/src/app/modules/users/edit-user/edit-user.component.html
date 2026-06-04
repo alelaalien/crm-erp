@@ -126,7 +126,7 @@
         
         <div *ngFor="let role of ROLES" 
              class="border rounded p-3 d-flex flex-column transition-all"
-             [ngClass]="{'border-primary bg-light-primary': isRoleSelected(role.id), 'border-gray-300': !isRoleSelected(role.id)}">
+             [ngClass]="{'border-primary bg-light-primary': isRoleSelected(role.name), 'border-gray-300': !isRoleSelected(role.name)}">
             
             <div class="d-flex align-items-center justify-content-between">
                 <div class="form-check form-check-custom form-check-solid">

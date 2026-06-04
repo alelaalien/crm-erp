@@ -106,7 +106,7 @@
                                             <a href="#">
                                             
                                         <div class="symbol-label symbol-40px me-5">
-                                            <img [src]="URL_STORAGE + (USER.avatar ?? 'user.png')" alt="avatar" class="w-40px h-40px rounded-circle object-fit-cover">
+                                            <img [src]="USER.avatar" alt="avatar" class="w-40px h-40px rounded-circle object-fit-cover">
                                         </div>
                                         
                                             </a>
@@ -139,7 +139,7 @@
                                 <td class="text-center" (click)="toggleSection(USER.id, 'branch',  USER.branch?.id ?? 0)" [class.cursor-pointer]="USER.branch?.id">
 
                                         <span>
-                                        
+                                     
                                                 {{  USER.branch?.name ?? 'N/D'}}   
                                                 
                                         </span>
