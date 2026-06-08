@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { UserModel } from '../../models/user.model';
+import { UserDTO } from 'src/app/dtos/user.dto';  
 import { environment } from '../../../../../environments/environment';
 import { AuthModel } from '../../models/auth.model';
 
@@ -22,8 +22,8 @@ export class AuthHTTPService {
   }
 
   // CREATE =>  POST: add a new user to the server
-  createUser(user: UserModel): Observable<UserModel> {
-    return this.http.post<UserModel>(API_USERS_URL, user);
+  createUser(user: UserDTO): Observable<UserDTO> {
+    return this.http.post<UserDTO>(API_USERS_URL, user);
   }
 
   // Your server should check email => If email exists send link to the user and return true | If email doesn't exist return false
@@ -33,11 +33,11 @@ export class AuthHTTPService {
     });
   }
 
-  getUserByToken(token: string): Observable<UserModel> {
+  getUserByToken(token: string): Observable<UserDTO> {
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<UserModel>(`${API_USERS_URL}/me`, {
+    return this.http.get<UserDTO>(`${API_USERS_URL}/me`, {
       headers: httpHeaders,
     });
   }

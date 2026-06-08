@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource; 
+use App\Services\AuthService; 
  
  
 class AuthController extends Controller
@@ -15,9 +17,12 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    private $service; 
+
+    public function __construct(AuthService $service)
     {
          $this->middleware('auth:api', ['except' => ['login', 'register']]);
+         $this->service = $service;
     }
  
  
@@ -26,25 +31,12 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register() {
-       // $this->authorize("create", User::class);
-        $validator = Validator::make(request()->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:8',
-        ]);
- 
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
-        }
- 
-        $user = new User;
-        $user->name = request()->name;
-        $user->email = request()->email;
-        $user->password = bcrypt(request()->password);
-        $user->save();
- 
-        return response()->json($user, 201);
+    public function register(RegisterRequest $request ) {
+        
+        $toRegister = $this->service->register($request->validated());
+   
+        return  new UserResource($toRegister) ;
+        
     }
  
  
@@ -53,39 +45,25 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-public function login()
+public function login(LoginRequest $request)
 {
-    try {
-        $credentials = request(['email', 'password']);
- 
-         if (! $token = auth('api')->attempt($credentials)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Credenciales incorrectas o usuario no autorizado.'
-            ], 401);
-        }
- 
-        return $this->respondWithToken($token);
+    $payload =  $this->service->attemptToLogin($request->validated());
 
-    } catch (\Throwable $e) {
-    
-        
-        $response = [
-            'status' => 'error',
-            'message' => 'Ocurrió un error interno en el servidor (500).'
-        ];
+    return response()->json([
+        "access_token" =>$payload['access_token'],
+        "token_type"   =>$payload['token_type'],
+        "expires_in"   =>$payload['expires_in'],
+        "user"         =>$payload['user' ]
+    ]); 
 
-         if (config('app.env') === 'local') {
+/*          if (config('app.env') === 'local') {
             $response['debug'] = [
-                'error_message' => $e->getMessage(),
+                'error_message' => $e->getMessage()],
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
-            ];
-        }
-
-        return response()->json($response, 500);
-    }
-}
+            ]; */
+        } 
+ 
  
     /**
      * Get the authenticated User.
@@ -94,7 +72,8 @@ public function login()
      */
     public function me()
     {
-        return response()->json(auth('api')->user());
+        $user = new UserResource(auth('api')->user());
+        return response()->json($user);
     }
  
     /**
@@ -126,24 +105,5 @@ public function login()
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token)
-    {
-        $permissions  =  auth('api')->user()->getAllPermissions()->map(function($p){
-            return $p->name;
-        });
-        $roles = auth('api')->user()->getRoleNames();
-
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60,
-            'user' => [
-                "full_name" => auth('api')->user()->name ,// +' '+ auth('api')->user()->surname,
-                "email" => auth('api')->user()->email,
-               "avatar" => asset('storage/users/' . (auth('api')->user()->avatar ?: 'user.png')),
-                "roles" => $roles,
-                "permissions" => $permissions  ]
-
-        ]);
-    }
+    
 }

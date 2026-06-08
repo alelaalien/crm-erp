@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
-import { UserModel } from 'src/app/models/user.model';  
+import { first } from 'rxjs/operators'; 
 import { AuthService } from '../../../../core/auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserDTO } from 'src/app/dtos/user.dto';
 
 @Component({
   selector: 'app-login',
@@ -77,7 +77,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     const loginSubscr = this.authService
       .login(this.f.email.value, this.f.password.value)
       .pipe(first())
-      .subscribe((user: UserModel | undefined) => {
+      .subscribe((user: UserDTO | undefined) => {
         if (user) {
           document.location.reload();
         } else {

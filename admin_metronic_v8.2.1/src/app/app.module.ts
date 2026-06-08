@@ -1,7 +1,7 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 // --- Modulos de Terceros ---
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
@@ -18,7 +18,7 @@ import { AppComponent } from './app.component';
 import { AuthService } from './core/auth/auth.service';
 import { SharedModule } from './shared/shared.module';
 import { environment } from 'src/environments/environment';
-
+import { AuthInterceptor } from './core/auth/interceptors/auth.interceptor';
 // #fake-start#
 import { FakeAPIService } from './_fake/fake-api.service';
 // #fake-end#
@@ -61,6 +61,11 @@ ToastrModule.forRoot(),
       useFactory: appInitializer,
       multi: true,
       deps: [AuthService],
+    },
+    {
+provide: HTTP_INTERCEPTORS,
+useClass: AuthInterceptor,
+multi: true
     },
   ], 
   bootstrap: [AppComponent],
