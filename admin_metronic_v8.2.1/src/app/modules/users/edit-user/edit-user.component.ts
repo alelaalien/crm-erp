@@ -68,8 +68,7 @@ processAvatar(event: any) {
       const index = this.selectedRoles.indexOf(roleName);
       if(index > -1) this.selectedRoles.splice(index, 1);
       else this.selectedRoles.push(roleName);
-
-      console.log(this.selectedRoles);
+ 
     }
   ngOnInit() : void {
    

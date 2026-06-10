@@ -10,7 +10,7 @@ use App\Services\UserService;
 
 class UserAccessController extends Controller
 { 
-    protected $service;
+    private $service;
 
     public function __construct(UserService $service) {
         $this->service = $service;

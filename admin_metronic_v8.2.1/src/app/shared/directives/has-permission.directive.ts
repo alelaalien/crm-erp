@@ -21,7 +21,7 @@ export class HasPermissionDirective implements OnInit{
     let hasAccess = false;
  
     const isAdmin = this.authService.isSuperAdmin();
-
+  
     if(isAdmin) hasAccess = true;
 
     if( typeof this.permission === 'string') 

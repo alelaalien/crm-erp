@@ -56,7 +56,7 @@ export class ListUsersComponent {
 
     this.userService.listUsers(page, this.search) 
                               .subscribe((resp:any)=>{
-                                  console.log(resp)
+                               
                                   this.USERS = resp.users ;
                                   this.pageSize = 25; 
                                   this.totalPages = Math.ceil(resp.total / this.pageSize); 

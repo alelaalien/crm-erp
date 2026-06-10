@@ -54,7 +54,7 @@ export class AuthService implements  OnDestroy {
           return this.authHttp.login(email, password)
                               .pipe( map((auth: any)=>
                                       {
-                                        console.log(auth);
+                                      
                                           this.storageService.saveAuth(auth.access_token, auth.user);
                                           this.userSubject.next(auth.user)
                                           return auth;
@@ -130,10 +130,13 @@ export class AuthService implements  OnDestroy {
   
 }*/ 
   //el permiso
-      hasPermission(permission: string): boolean {
-        if( this.isSuperAdmin()) return true;
+      hasPermission(permission: string)//: boolean 
+      { 
+        if( this.isSuperAdmin()) 
+          return true; 
         const user = this.currentUserValue;
-        return user?.permissions?.includes(permission) || false;
+      return user?.permissions?.includes(permission) || false;
+    // return true;
       }
 
     //AL MENOS UNO 
@@ -151,8 +154,12 @@ export class AuthService implements  OnDestroy {
       }
       public isSuperAdmin(): boolean {
         const user = this.currentUserValue;
-        console.log(user);
-        if (user?.roles?.includes('Super Admin')) console.log("es admin");// return true;
+      
+        const roles = user?.roles_names;
+
+      
+        if (roles?.includes('Super Admin')) 
+          return true; 
         return false;  
       }
 

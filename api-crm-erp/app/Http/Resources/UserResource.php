@@ -39,7 +39,7 @@ class UserResource extends JsonResource
             "id"          => $this-> id,
             "updated_at"  => $this->updated_at?->format("d-m-Y h:i A")
                                               ?? $this->created_at->format("d-m-Y h:i A"),  
-            
+            'roles_names' => $this->roles?->pluck('name'),
             
             "roles"       => $this->roles?->map(
                 function($role) 
@@ -56,7 +56,7 @@ class UserResource extends JsonResource
                         ];
                 })->toArray() ?? [],
 
-        ];
+          ];
     }
 }
                  

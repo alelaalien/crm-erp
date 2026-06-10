@@ -1,3 +1,6 @@
+import { PermissionDto } from "./permission.dto";
+import { RolesDto } from "./role.dto";
+
 export type Gender = 'M' | 'F' | 'N';
 
 export interface UserDTO {
@@ -20,7 +23,8 @@ export interface UserDTO {
   branch_id?: number;
   deleted_at?: string; 
    
-  permissions?: string[];
-  roles?: string[];
+  permissions?: string []; //PermissionDto[];
+  roles_names?:string [];
+  roles?: RolesDto[];
   
 }

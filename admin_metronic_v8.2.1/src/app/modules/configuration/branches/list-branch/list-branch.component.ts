@@ -43,7 +43,7 @@ export class ListBranchComponent implements OnInit{
   listBranches(page = 1){
     this.branchService.listBranches() 
     .subscribe((resp:any)=>{
-        console.log(resp)
+       
         this.BRANCHES = resp.branches.data ;
         this.pageSize = 25; 
         this.totalPages = Math.ceil(resp.total / this.pageSize); 

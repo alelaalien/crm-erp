@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from './auth.service';
 import { InactivityService } from '../../modules/auth/services/inactivity.service';
 import { map, Observable, take } from 'rxjs';
+import { StoragKeys } from '../constants/storage.constants';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard  {
@@ -15,8 +16,9 @@ export class AuthGuard  {
     route: ActivatedRouteSnapshot, 
     state: RouterStateSnapshot) : Observable<boolean> 
     {
-   
-   const token = localStorage.getItem('token');
+    
+    const token=  localStorage.getItem(StoragKeys.TOKEN);
+ 
     return this.authService.currentUser$.pipe(
       
       take(1),
