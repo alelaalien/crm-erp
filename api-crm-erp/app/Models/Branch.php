@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Branch extends Model
@@ -15,16 +16,22 @@ class Branch extends Model
         'latitude',
         'longitude',
         'address',
-        'phone'
+        'phone',
+        "city",
+        "country"
         ];
 
     
-    public function users()
+    public function users() :HasMany
     {
         return $this->hasMany(User::class);
     }
     public function phones(): MorphMany
     {
         return $this->morphMany(Phone::class, 'phoneable');
+    }
+    public function images() : HasMany
+    {
+        return $this->hasMany(BranchImages::class, "branch_id");
     }
 }

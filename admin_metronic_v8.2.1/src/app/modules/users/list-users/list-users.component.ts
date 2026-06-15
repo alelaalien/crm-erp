@@ -48,8 +48,7 @@ export class ListUsersComponent {
     this.isLoadingBrach$ = this.branchService.isLoading$;
     this.listBranches();
     this.isLoadingUser$ = this.userService.isLoadingUser$;
-    this.listUsers();
-    //this.listRoles();
+    this.listUsers(); 
     
   }
   listUsers(page = 1){

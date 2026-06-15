@@ -1,10 +1,10 @@
-import { Component, Injector, OnInit } from '@angular/core';
-import { NgbModal, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
-import { URL_BACKEND } from 'src/app/config/config';
+import { ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
+import { NgbModal, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap'; 
 import { BranchService } from 'src/app/core/services/branch.service';
 import { EditBranchComponent } from '../edit-branch/edit-branch.component';
 import { CreateBranchComponent } from '../create-branch/create-branch.component';
 import { DeleteBranchComponent } from '../delete-branch/delete-branch.component';
+import { BranchImageDto } from 'src/app/dtos/branch-image.dto';
 
 @Component({
   selector: 'app-list-branch',
@@ -15,36 +15,53 @@ export class ListBranchComponent implements OnInit{
 
   search:string = '';
   BRANCHES:any;
+  mainImage: BranchImageDto;
   isLoadingBranches$:any; 
   totalPages: number = 0;
   currentPage:number = 1; 
   pageSize: number = 0; 
- 
+  activeMapData: { lat: number, lon: number, id: string, name: string } | null = null;
   branchIdExpanded: number | string | null = null;
   expandedRow: { branchId: any; section: string } | null = null;
   colspan: number = 7; 
-  ROLES: any;
-  URL_STORAGE : string = URL_BACKEND + "storage/branchs/";
+  
   
   constructor(
   
         private offcanvasService: NgbOffcanvas,
         private injector: Injector,
         private branchService : BranchService,
-        private modalService : NgbModal
+        private modalService : NgbModal,
+        private changeDetectorRef : ChangeDetectorRef
       )
   {}
   ngOnInit(): void {
     this.isLoadingBranches$ = this.branchService.isLoading$;
     this.listBranches();
+  
   }
+    closeItem(item: any)
+  {
+    item = null;
+  }
+ 
 
+toggleMap(branch: any) {
+ console.log(branch)
+ 
+  this.BRANCHES.forEach((b:any) => {
+    if (b.id !== branch.id) b.showMap = false;
+  });
+
+ 
+  branch.showMap = !branch.showMap;
+}
   
   listBranches(page = 1){
     this.branchService.listBranches() 
     .subscribe((resp:any)=>{
-       
-        this.BRANCHES = resp.branches.data ;
+       console.log(resp.branches)
+        this.BRANCHES = resp.branches;
         this.pageSize = 25; 
         this.totalPages = Math.ceil(resp.total / this.pageSize); 
         this.currentPage = page;
@@ -79,37 +96,41 @@ export class ListBranchComponent implements OnInit{
       }
     )
   }
-  deleteBranch(branch: any){
  
-      const modalRef = this.modalService.open(DeleteBranchComponent,
-        {
-          centered : true,
-          size: 'md'
-        }
+  deleteBranch(branch:any){
+ console.log(branch)
+              const modalRef= this.modalService.open(DeleteBranchComponent, {
+                centered: true, size: 'md'
+              });
 
-      );
+              modalRef.componentInstance.BRANCH_SELECTED =branch;
+              modalRef.componentInstance.BranchD.subscribe((resp:any) =>{
+           
+                    if (resp?.brach_id)  { 
+console.log(resp)
+                        this.BRANCHES = this.BRANCHES.filter((r: any) => r.id != resp.brach_id); 
 
-      modalRef.componentInstance.BRANC_SELECTED = branch;
-      modalRef.componentInstance.BranchD.subscribe(
-        (branch: any)=>{
-          if(branch?.id) 
+                        this.changeDetectorRef.markForCheck();
+                      
+                      }
+                        
+              });
 
-            this.BRANCHES = this.BRANCHES.filter(
-              (b: any) => b.id != branch.id
-            );
-        }
-      )
   }
-
   //////////////////////////
-
+getMainImageUrl(branch: any): string {
+  // Buscamos la imagen que sea principal
+  const mainImage = branch.images.find((img: any) => img.is_main == 1 || img.is_main === true);
+  
+  // Si existe, devolvemos su URL, sino la imagen por defecto
+  return mainImage ? mainImage.url : 'assets/media/avatars/blank.png';
+}
   openBranchesCanvas(branch : any = null)
   {
     const toOpen = branch ? EditBranchComponent : CreateBranchComponent;
-
-    const offCanvas = this.offcanvasService.open(toOpen,{
+     const offCanvas = this.offcanvasService.open(toOpen,{
       position: "end",
-      panelClass: 'w-100 w-md-500px bg-white',
+      panelClass: 'w-100 bg-white',
       injector: this.injector
 
     });
@@ -137,8 +158,18 @@ export class ListBranchComponent implements OnInit{
     }
 
       loadPage($event:any){
-                this.listBranches();
-                console.log(this.BRANCHES)
+                this.listBranches(); 
   }
-
+  openMap(branch: any) {
+     this.activeMapData = {
+        lat: branch.latitude,
+        lon: branch.longitude,
+        id: 'map-' + branch.id,
+        name: branch.name
+    };
+}
+closeMap() {
+   
+    this.activeMapData = null;
+}
 }

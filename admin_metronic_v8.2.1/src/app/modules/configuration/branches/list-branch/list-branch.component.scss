@@ -1,0 +1,26 @@
+.map-overlay-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center; /* Centrado horizontal */
+    align-items: center;     /* Centrado vertical */
+    background-color: rgba(0, 0, 0, 0.3); /* Un toque oscuro sutil opcional */
+    z-index: 1050; /* Por encima de todo */
+}
+
+ 
+.floating-map-panel {
+    background: white;
+    width: 500px;
+    max-width: 90%;
+    z-index: 1051;
+    overflow: hidden;
+    
+    .panel-body {
+        height: 350px;  
+        width: 100%;
+    }
+}

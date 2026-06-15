@@ -15,17 +15,27 @@ class BranchResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            "id" =>$this->id,
             "name" => $this->name,
             "address" => $this->address,
-            "lon" => $this->lon,
-            "lat" => $this->lat,
+            "longitude" => $this->longitude,
+            "latitude" => $this->latitude,
+            "last_updated" => $this->updated_at->format("d-m-y h:i A"),
             "phone" => $this->phones?->map(
                 function($p)
                 {
-                    return ["number" => $p->phone_numer, "type" =>$p->type];
+                    return ["number" => $p->phone_number, "type" =>$p->type];
 
                 }
             ),
+            "images" => $this->images?->map(
+                function($i)
+                {
+                    return ["url" => $i->url ? asset("storage/branches/". $i->url) 
+                                 : asset("/storage/branches/branch.png"), 
+                    "is_main" => $i->is_main];
+                }
+            )
 
         ];
     }

@@ -1,1 +1,154 @@
-<p>create-brach works!</p>
+<div class="container-fluid h-100 p-0">
+  <div class="row g-0 h-100">
+
+    <!--  -->
+    <div class="col-md-4 h-100  bg-white border-start overflow-auto">
+      <div class="card w-100 rounded-0 border-0   d-flex flex-column">
+        <div class="card-header">
+           <span class="fs-4 fw-bolder">New Branch</span>
+        </div>
+        
+          <div class="flex-grow-1 overflow-auto">
+              <div class="card-body hover-scroll-overlay-y" style="height: calc(100vh - 190px);">
+    <div class="fv-row mb-7">
+      <label class="required fw-bold fs-6 mb-2">Branch Name</label>
+      <input type="text" [(ngModel)]="name" class="form-control form-control-solid" placeholder="Ex. Main Office" />
+    </div>
+
+    <div class="fv-row mb-7">
+      <label class="required fw-bold fs-6 mb-2">Address</label>
+      <input type="text" [(ngModel)]="address" class="form-control form-control-solid" placeholder="Ex. Street Avenue 123" />
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 fv-row mb-7">
+        <label class="fw-bold fs-6 mb-2">Latitude</label>
+        <input type="number" [(ngModel)]="latitude" class="form-control form-control-solid" placeholder="Ex. 36.7213" />
+      </div>
+      <div class="col-md-6 fv-row mb-7">
+        <label class="fw-bold fs-6 mb-2">Longitude</label>
+        <input type="number" [(ngModel)]="longitude" class="form-control form-control-solid" placeholder="Ex. -4.4216" />
+      </div>
+    </div>
+
+    <div class="fv-row mb-7">
+      <label class="fw-bold fs-6 mb-3">Contact Phones</label>
+      <div class="row g-3 mb-3">
+        <div class="col-4">
+          <select [(ngModel)]="phone.type" class="form-select form-select-solid">
+            <option value="mobile" selected>Mobile</option>
+            <option value="landline">Landline</option>
+            <option value="whatsapp">WhatsApp</option>
+            <option value="others">Others</option>
+          </select>
+        </div>
+        <div class="col-8">
+          <input type="text" [(ngModel)]="phone.number" class="form-control form-control-solid" placeholder="Phone number" />
+        </div>
+        <button type="button" class="btn btn-sm btn-light-primary" [disabled]="!phone.number" (click)="addPhoneToList()">
+          <i class="bi bi-plus-lg fs-4 me-1"></i> Add phone
+        </button>
+      </div>
+
+      <div *ngIf="phones.length > 0" class="d-flex flex-wrap gap-2 mt-3">
+        <div *ngFor="let phone of phones; let i = index" class="badge badge-lg badge-light-secondary d-flex align-items-center">
+          <i class="ki-duotone ki-phone me-2 text-gray-500 fs-5"></i>
+          <span class="text-gray-800 fw-bold me-3">
+            {{ phone.type | titlecase }}: {{ phone.number }}
+          </span>
+          <button type="button" class="btn btn-icon btn-sm btn-active-light-danger ms-2" (click)="removePhone(phone)">
+            <span class="ki-duotone ki-cross fs-2">
+              <span class="path1"></span>
+              <span class="path2"></span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+          </div>
+
+        <div class="card-footer">
+           <div class="col-12 bg-white text-center py-5 border-top">
+    <button type="button" class="btn btn-light me-3" (click)="dismissPanel()">Cancel</button>
+    <button type="button" class="btn btn-primary fw-bold" (click)="saveBranch()">Save Branch</button>
+  </div>
+           </div>
+      </div>
+    </div>    
+
+
+
+    <!--  -->
+    <div class="col-md-8   bg-light p-4 overflow-auto">
+      <h5>Branch Gallery</h5>
+      <div class="row g-3">
+        <div class="fv-row mb-10">
+  <label class="fw-bold fs-6 mb-3">Branch Images</label>
+ 
+  <div class="row">
+<div class="col-12">
+  <div class="position-relative ">
+    
+<img [attr.src]="mainImage?.preview || null" alt="" class="imagen-responsive">     <label class="position-absolute bottom-0 end-0 m-3 camera
+              symbol symbol-60px bg-white border border-gray-300 
+              d-flex justify-content-center align-items-center 
+              cursor-pointer shadow-lg rounded-circle">
+    
+    <i class="bi bi-camera fs-2 text-gray-600"></i>
+    
+    <input type="file" (change)="processImages($event)" multiple accept=".png, .jpg, .jpeg" class="d-none" />
+</label>
+    
+ 
+
+
+    
+  </div>
+</div>
+   
+  </div>
+  <div class="row"> 
+    <div class="col-12 d-flex row">
+ 
+  <div *ngFor="let img of files; let i = index" class="col-sm-6 col-md-3">
+    
+    <div class="card card-flush border border-dashed border-gray-300 h-100">
+      <img [src]="img.preview" class="card-img-top rounded" style="height: 150px; object-fit: cover;">
+      
+      <div class="card-body p-2 mt-2">
+        <div class="d-flex justify-content-between align-items-center">
+          <label class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="mainImage" 
+                   [checked]="img.isMain" (change)="setMain(i)">
+            <span class="form-check-label fs-7">Principal</span>
+          </label>
+
+          <button type="button" class="btn btn-sm btn-icon btn-danger" (click)="removeImage(i)">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+ 
+    </div>
+  </div>
+
+
+ 
+</div>
+      </div>
+    </div>
+
+
+    
+  </div>
+ 
+     
+ 
+</div>

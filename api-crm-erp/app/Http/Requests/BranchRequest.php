@@ -23,12 +23,16 @@ class BranchRequest extends FormRequest
     {
         return [
             "name"=> 'required|string|max:250',
-            'lat' => 'required|numeric|between:-90,90',
-            'lon' => 'required|numeric|between:-180,180',
+            "city"=> 'nullable|string|max:250',
+            "country"=> 'nullable|string|max:250',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
             "address" => 'required|string|max:250',
             "phono" =>'nullable|array',
             'phone.*.phone_number' =>'required|string',
-            'phone.*.type' =>'nullable|string'
+            'phone.*.type' =>'nullable|string',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048'
             
         ];
     }

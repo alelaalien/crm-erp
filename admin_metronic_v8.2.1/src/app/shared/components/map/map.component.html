@@ -1,1 +1,11 @@
-<div [id]="map_Id" style="height: 400px; width: 100%;"></div>
+<div *ngIf="isFloating" class="floating-map-panel shadow-lg rounded">
+       <div class="panel-header d-flex justify-content-between p-3 border-bottom">
+           <span class="fw-bold">Location: {{ name }}</span>
+           <button class="btn btn-sm  " (click)="close()">
+                <span>X</span>
+           </button>
+       </div>
+       <div [id]="mapId" class="panel-body"></div>
+    </div>
+
+    <div *ngIf="!isFloating" [id]="mapId" style="height: 100%; width: 100%;"></div>

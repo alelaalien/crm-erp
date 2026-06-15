@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('branches', function (Blueprint $table) {
-          //  $table->dropColumn('phone');
+        Schema::table('branch_images', function (Blueprint $table) {
+            $table->string("alt_text")->nullable();
+            $table->integer("sort_order", false)->nullable();
         });
     }
 
@@ -21,8 +22,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('branches', function (Blueprint $table) {
-            //
+        Schema::table('branch_images', function (Blueprint $table) {
+            $table->dropColumn("alt_text");
+            $table->dropColumn("sort_order");
+
         });
     }
 };

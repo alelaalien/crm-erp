@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 
 import L from 'leaflet'
 
@@ -11,9 +11,15 @@ export class MapComponent  implements AfterViewInit, OnChanges{
      
   @Input() lat: number = 35.2917;
   @Input() lon: number = -2.2917;
-  @Input() map_Id : string = "map-deafault";
-
+  @Input() mapId : string = "map-deafault"; 
+  @Input() isFloating: boolean = false;  
+  @Input() name: string = '';
+  @Output() onClose = new EventEmitter<void>();
   private map: any;
+
+
+  close() { this.onClose.emit(); }
+
 
   
   ngAfterViewInit(): void {
@@ -28,7 +34,20 @@ export class MapComponent  implements AfterViewInit, OnChanges{
       }
 
   initMap(){
-    this.map = L.map(this.map_Id).setView([this.lat, this.lon], 13);
+    const iconRetinaUrl = 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png';
+  const iconUrl = 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png';
+  const shadowUrl = 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png';
+  
+  const iconDefault = L.icon({
+    iconRetinaUrl,
+    iconUrl,
+    shadowUrl,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+  });
+ 
+  L.Marker.prototype.options.icon = iconDefault;
+    this.map = L.map(this.mapId).setView([this.lat, this.lon], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         {
